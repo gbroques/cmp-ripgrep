@@ -11,6 +11,8 @@ nvim-cmp completion source for [ripgrep](https://github.com/BurntSushi/ripgrep) 
 
 Adding a completion source for flags allows them to be more discoverable, and aids with memory in case they're forgot.
 
+https://github.com/user-attachments/assets/d2ae029c-fd7f-455d-bd9d-24311fccd417
+
 ## Installation
 
 If you use [lazy.nvim](https://github.com/folke/lazy.nvim) as your plugin manager:
