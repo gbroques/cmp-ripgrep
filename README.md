@@ -1,6 +1,6 @@
 # cmp-ripgrep
 
-nvim-cmp completion source for [ripgrep](https://github.com/BurntSushi/ripgrep) flags.
+[nvim-cmp](https://github.com/hrsh7th/nvim-cmp) completion source for [ripgrep](https://github.com/BurntSushi/ripgrep) flags.
 
 > [!WARNING]
 > Currently experimental until v1.0.0 release.
