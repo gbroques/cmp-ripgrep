@@ -1,5 +1,7 @@
 *cmp-ripgrep-flags*	nvim-cmp completion source for ripgrep flags.
 
+Documentation for each flag is derived from ripgrep's man page.
+
 ==============================================================================
 
 cmp-ripgrep-flags.Option                              *cmp-ripgrep-flags.Option*

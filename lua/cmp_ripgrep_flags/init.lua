@@ -1,5 +1,7 @@
 ---@brief [[
 ---*cmp-ripgrep-flags*	nvim-cmp completion source for ripgrep flags.
+---
+---Documentation for each flag is derived from ripgrep's man page.
 ---@brief ]]
 local cmp = require('cmp')
 local read = require('cmp_ripgrep_flags.read')

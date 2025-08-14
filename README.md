@@ -2,6 +2,8 @@
 
 [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) completion source for [ripgrep](https://github.com/BurntSushi/ripgrep) flags.
 
+Documentation for each flag is derived from [ripgrep's man page](https://man.archlinux.org/man/rg.1).
+
 > [!WARNING]
 > Currently experimental until v1.0.0 release.
 
