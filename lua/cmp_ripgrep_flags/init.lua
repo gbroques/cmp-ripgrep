@@ -1,33 +1,10 @@
 local cmp = require('cmp')
+local read = require('cmp_ripgrep_flags.read')
 
 -- For creating a custom nvim-cmp completion source see :help cmp-develop.
 local source = {}
 
-local function is_windows()
-  return package.config:sub(1, 1) == '\\'
-end
-
-local path_sep = is_windows() and '\\' or '/'
-
--- copied from https://www.reddit.com/r/neovim/comments/tk1hby/comment/i1nipld/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
-local function get_path_to_script()
-  local str = debug.getinfo(2, 'S').source:sub(2)
-  if is_windows() then
-    str = str:gsub('/', '\\')
-  end
-  return str:match('(.*' .. path_sep .. ')')
-end
-
-local completion_items = {}
-local script_path = get_path_to_script()
-local file = io.open(script_path .. path_sep .. 'completion_items.json', 'r')
-if file then
-  local content = file:read("*a")
-  completion_items = vim.json.decode(content).completion_items
-  file:close()
-else
-  print("Error: Could not open completion_items.json")
-end
+local completion_items = read.completion_items()
 
 local default_option = {
   enabled = function()
