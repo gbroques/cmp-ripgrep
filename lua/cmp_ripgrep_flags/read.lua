@@ -1,3 +1,11 @@
+---@brief [[
+---@private
+---
+---Module for reading completion_items.json into memory as a Lua table.
+---
+---completion_items.json is generated. See CONTRIBUTING.md for details.
+---
+---@brief ]]
 local M = {}
 
 function M.completion_items()

@@ -1,16 +1,18 @@
---[[
-Print completion items as JSON to stdout.
-
-The following steps are performed:
-1. Generate ripgrep's man page via `rg --generate man` command.
-2. Convert ripgrep's man page to Markdown via `pandoc`.
-3. Parse the Markdown output.
-
-To execute this script, run:
-
-    nvim --clean --headless -l print_completion_items.lua
-
-]]
+---@brief [[
+---Print completion items as JSON to stdout.
+---
+---The following steps are performed:
+---    1. Generate ripgrep's man page via `rg --generate man` command.
+---    2. Convert ripgrep's man page to Markdown via `pandoc`.
+---    3. Parse the Markdown output.
+---
+---To execute this script, run:
+---
+--->
+---    nvim --clean --headless -l print_completion_items.lua
+---<
+---
+---@brief ]]
 local version_cmds = { 'nvim --version', 'rg -V', 'pandoc -v' }
 
 local versions = {}
