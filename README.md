@@ -184,9 +184,9 @@ cmp.setup {
 }
 ```
 
-### Excluding global Snippets
+### Excluding Global Snippets
 
-If you use rafamadriz/friendly-snippets, then exclude [global snippets](https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/global.json) such as time and timeHMS since they show up in the live grep args prompt:
+If you use [rafamadriz/friendly-snippets](https://github.com/rafamadriz/friendly-snippets), then exclude [global snippets](https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/global.json) such as time and timeHMS since they show up in the live grep args prompt:
 ```lua
 -- sample lazy.nvim configurationg
 {
