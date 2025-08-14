@@ -26,7 +26,7 @@ local completion_items = read.completion_items()
 ---The default excluded flags may be overridden via the `exclude` option.
 ---
 ---The below setup restricts the completion source to the live_grep_args picker,
----and displays the default options for the `kind` and `exclude` options.
+---and displays the default values for the `kind` and `exclude` options.
 --->lua
 ---  local function is_current_picker_live_grep_args()
 ---    local bufnr = vim.api.nvim_get_current_buf()

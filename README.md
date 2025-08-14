@@ -43,7 +43,7 @@ as they break the live_grep_args picker, or aren't very useful.
 The default excluded flags may be overridden via the `exclude` option.
 
 The below setup restricts the completion source to the live_grep_args picker,
-and displays the default options for the `kind` and `exclude` options.
+and displays the default values for the `kind` and `exclude` options.
 
 ```lua
 local function is_current_picker_live_grep_args()
