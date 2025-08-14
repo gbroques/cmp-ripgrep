@@ -121,7 +121,7 @@ require('cmp').setup({
           '-B', '--before-context',
           '--color',
           '--colors',
-          '--column', '--no-column',
+          '--column',
           '-C', '--context',
           '--context-separator',
           '--field-context-separator',
