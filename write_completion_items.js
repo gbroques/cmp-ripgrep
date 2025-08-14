@@ -12,7 +12,7 @@ const path = require('node:path');
 const COMMAND = 'rg --generate man | pandoc --from man --to markdown';
 // include the . for rg's -. flag.
 const FLAG_PATTERN = '--?[.a-zA-Z0-9-]+';
-const OUTPUT_FILEPATH = './lua/cmp_ripgrep/completion_items.json';
+const OUTPUT_FILEPATH = './lua/cmp_ripgrep_flags/completion_items.json';
 
 function isExecutableAvailable(name) {
     try {

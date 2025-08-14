@@ -1,4 +1,4 @@
-# cmp-ripgrep
+# cmp-ripgrep-flags
 
 [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) completion source for [ripgrep](https://github.com/BurntSushi/ripgrep) flags.
 
@@ -18,7 +18,7 @@ https://github.com/user-attachments/assets/d2ae029c-fd7f-455d-bd9d-24311fccd417
 If you use [lazy.nvim](https://github.com/folke/lazy.nvim) as your plugin manager:
 ```lua
 {
-  'gbroques/cmp-ripgrep',
+  'gbroques/cmp-ripgrep-flags',
   dependencies = 'hrsh7th/nvim-cmp'
 }
 ```
@@ -48,7 +48,7 @@ require('cmp').setup({
   end,
   sources = {
     {
-      name = 'ripgrep',
+      name = 'ripgrep_flags',
       -- Only enable the completion source when the current picker is live_grep_args
       option = { enabled = is_current_picker_live_grep_args }
     },
@@ -74,7 +74,7 @@ require('cmp').setup({
   end,
   sources = {
     {
-      name = 'ripgrep',
+      name = 'ripgrep_flags',
       option = {
         -- Only enable the completion source when the current picker is live_grep_args
         enabled = is_current_picker_live_grep_args,
@@ -104,7 +104,7 @@ require('cmp').setup({
   end,
   sources = {
     {
-      name = 'ripgrep',
+      name = 'ripgrep_flags',
       option = {
         -- Only enable the completion source when the current picker is live_grep_args
         enabled = is_current_picker_live_grep_args,

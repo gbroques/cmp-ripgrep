@@ -113,7 +113,7 @@ end
 
 ---@return string
 function source:get_debug_name()
-  return 'ripgrep'
+  return 'ripgrep_flags'
 end
 
 return source
