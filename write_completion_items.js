@@ -92,6 +92,13 @@ function extractCompletionItems(lines) {
             }
         }
     }
+    // for the last -V, --version flag
+    if (documentation) {
+        flags.forEach(flag => {
+            const completionItem = createCompletionItem(flag, documentation);
+            completionItems.push(completionItem);
+        });
+    }
     return completionItems;
 }
 

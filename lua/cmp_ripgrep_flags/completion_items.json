@@ -1,7 +1,7 @@
 {
   "generated": {
     "from": "write_completion_items.js",
-    "at": "2025-08-14T08:35:30.162Z"
+    "at": "2025-08-14T15:08:05.977Z"
   },
   "versions": [
     "ripgrep 14.1.1",
@@ -1014,6 +1014,20 @@
       "documentation": {
         "kind": "markdown",
         "value": "**\\--type-list**\n\nShow all supported file types and their corresponding globs. This\ntakes any **\\--type-add** and **\\--type-clear** flags given into\naccount. Each type is printed on its own line, followed by a **:** and\nthen a comma-delimited list of globs for that type on the same line.\n"
+      }
+    },
+    {
+      "label": "-V",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-V**, **\\--version**\n\nThis flag prints ripgrep\\'s version. This also may print other\nrelevant information, such as the presence of target specific\noptimizations and the **git** revision that this build of ripgrep was\ncompiled from.\n"
+      }
+    },
+    {
+      "label": "--version",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-V**, **\\--version**\n\nThis flag prints ripgrep\\'s version. This also may print other\nrelevant information, such as the presence of target specific\noptimizations and the **git** revision that this build of ripgrep was\ncompiled from.\n"
       }
     }
   ]

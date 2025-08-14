@@ -110,46 +110,53 @@ require('cmp').setup({
         enabled = is_current_picker_live_grep_args,
         -- exclude flags that break the picker, or are otherwise not useful.
         exclude = {
-          '-v', '--invert-match', -- http://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/65
-          '--json',               -- https://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/4
-          '-h', '--help',
-          '--color',
-          '--colors',
-          '--passthru',
+          -- INPUT OPTIONS
+          '-f', '--file',
+          -- SEARCH OPTIONS
+          '-v', '--invert-match', -- see http://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/65
+          '--mmap',
+          '-j', '--threads',
+          -- OUTPUT OPTIONS
           '-A', '--after-context',
           '-B', '--before-context',
+          '--color',
+          '--colors',
+          '--column', '--no-column',
           '-C', '--context',
+          '--context-separator',
+          '--field-context-separator',
+          '--field-match-separator',
+          '--heading',
+          '-h', '--help',
+          '--hostname-bin',
+          '--hyperlink-format',
+          '--include-zero',
+          '-n', '--line-number',
+          '-N', '--no-line-number',
           '-0', '--null',
+          '--passthru',
           '-q', '--quiet',
           '-p', '--pretty',
-          '-c', '--count',
-          '--count-matches',
-          '--include-zero',
-          '--stats',
-          '--type-list',
-          '-f', '--file',
-          '-l', '--files-with-matches',
-          '--files-without-match',
-          '--files',
-          '--debug',
-          '--trace',
-          '-j', '--threads',
           '-r', '--replace',
+          '--vimgrep',
           '-H', '--with-filename',
           '-I', '--no-filename',
-          '--column', '--no-column',
-          '-N', '--no-line-number',
-          '-n', '--line-number',
-          '--field-match-separator',
-          '--field-context-separator',
-          '--context-separator',
-          '--pcre2-version',
+          -- OUTPUT MODES
+          '-c', '--count',
+          '--count-matches',
+          '-l', '--files-with-matches',
+          '--files-without-match',
+          '--json', -- see https://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/4
+          -- LOGGING OPTIONS
+          '--debug',
+          '--stats',
+          '--trace',
+          -- OTHER BEHAVIORS
+          '--files',
           '--generate',
-          '--mmap',
-          '--heading',
-          '--hostname-bin',
-          '--vimgrep',
-          '--hyperlink-format'
+          '--type-list',
+          '--pcre2-version',
+          '-V', '--version'
         }
       }
     },
