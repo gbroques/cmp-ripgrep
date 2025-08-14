@@ -13,6 +13,8 @@ Documentation for each flag is derived from [ripgrep's man page](https://man.arc
 
 Adding a completion source for flags allows them to be more discoverable, and aids with memory in case they're forgot.
 
+It could also be useful a completion source for a more raw `:Rg` command from plugins such as [duane9/nvim-rg](https://github.com/duane9/nvim-rg).
+
 https://github.com/user-attachments/assets/d2ae029c-fd7f-455d-bd9d-24311fccd417
 
 ## Installation
