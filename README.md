@@ -25,144 +25,13 @@ If you use [lazy.nvim](https://github.com/folke/lazy.nvim) as your plugin manage
 
 ## Setup
 
-By default, the completion source is enabled everywhere.
+Whether the completion source is enabled, and which flags are available for completion are configurable.
 
-To limit it to only the live_grep_args picker, then add the following code:
-```lua
-local function is_current_picker_live_grep_args()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local current_picker = require('telescope.actions.state').get_current_picker(bufnr)
-  if current_picker == nil then
-    return false
-  end
-  -- You need to update this if you customize the default prompt_title for the picker.
-  return current_picker and current_picker.prompt_title == 'Live Grep (Args)'
-end
-require('cmp').setup({
-  -- Enable completion when picker is live_grep_args, and buffer type is prompt.
-  -- Completion is disabled by default for the prompt buffer type:
-  -- https://github.com/hrsh7th/nvim-cmp/issues/60
-  enabled = function()
-    local is_prompt = vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt'
-    return (is_prompt and is_current_picker_live_grep_args()) or not is_prompt
-  end,
-  sources = {
-    {
-      name = 'ripgrep_flags',
-      -- Only enable the completion source when the current picker is live_grep_args
-      option = { enabled = is_current_picker_live_grep_args }
-    },
-  },
-})
-```
+For setup and configuration, see [doc/cmp-ripgrep-flags.txt](./doc/cmp-ripgrep-flags.txt) or `:help cmp-ripgrep-flags`.
 
-## Configuration
+## Additional Configuration
 
-### Customizing the Kind
-
-The kind controlling the icon of completion items in the menu may be customized.
-
-It defaults to Variable.
-```lua
-require('cmp').setup({
-  -- Enable completion when picker is live_grep_args, and buffer type is prompt.
-  -- Completion is disabled by default for the prompt buffer type:
-  -- https://github.com/hrsh7th/nvim-cmp/issues/60
-  enabled = function()
-    local is_prompt = vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt'
-    return (is_prompt and is_current_picker_live_grep_args()) or not is_prompt
-  end,
-  sources = {
-    {
-      name = 'ripgrep_flags',
-      option = {
-        -- Only enable the completion source when the current picker is live_grep_args
-        enabled = is_current_picker_live_grep_args,
-        kind = require('cmp').lsp.CompletionItemKind.Variable
-      }
-    },
-  },
-})
-```
-
-### Customizing Completion Flags
-
-Numerous flags are filtered out because they either break the picker, or aren't very useful.
-
-These may be overridden by passing `exclude` to `option`.
-
-The default list may be seen below:
-
-```lua
-require('cmp').setup({
-  -- Enable completion when picker is live_grep_args, and buffer type is prompt.
-  -- Completion is disabled by default for the prompt buffer type:
-  -- https://github.com/hrsh7th/nvim-cmp/issues/60
-  enabled = function()
-    local is_prompt = vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt'
-    return (is_prompt and is_current_picker_live_grep_args()) or not is_prompt
-  end,
-  sources = {
-    {
-      name = 'ripgrep_flags',
-      option = {
-        -- Only enable the completion source when the current picker is live_grep_args
-        enabled = is_current_picker_live_grep_args,
-        -- exclude flags that break the picker, or are otherwise not useful.
-        exclude = {
-          -- INPUT OPTIONS
-          '-f', '--file',
-          -- SEARCH OPTIONS
-          '-v', '--invert-match', -- see http://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/65
-          '--mmap',
-          '-j', '--threads',
-          -- OUTPUT OPTIONS
-          '-A', '--after-context',
-          '-B', '--before-context',
-          '--color',
-          '--colors',
-          '--column',
-          '-C', '--context',
-          '--context-separator',
-          '--field-context-separator',
-          '--field-match-separator',
-          '--heading',
-          '-h', '--help',
-          '--hostname-bin',
-          '--hyperlink-format',
-          '--include-zero',
-          '-n', '--line-number',
-          '-N', '--no-line-number',
-          '-0', '--null',
-          '--passthru',
-          '-p', '--pretty',
-          '-q', '--quiet',
-          '-r', '--replace',
-          '--vimgrep',
-          '-H', '--with-filename',
-          '-I', '--no-filename',
-          -- OUTPUT MODES
-          '-c', '--count',
-          '--count-matches',
-          '-l', '--files-with-matches',
-          '--files-without-match',
-          '--json', -- see https://github.com/nvim-telescope/telescope-live-grep-args.nvim/issues/4
-          -- LOGGING OPTIONS
-          '--debug',
-          '--stats',
-          '--trace',
-          -- OTHER BEHAVIORS
-          '--files',
-          '--generate',
-          '--type-list',
-          '--pcre2-version',
-          '-V', '--version'
-        }
-      }
-    },
-  },
-})
-```
+The following is additional suggested configuration.
 
 ### Displaying Ripgrep as a Source
 
@@ -178,7 +47,7 @@ cmp.setup {
       -- Source
       vim_item.menu = ({
         -- 👇 Show Ripgrep source
-        ripgrep = "[Ripgrep]",
+        ripgrep_flags = "[Ripgrep]",
         buffer = "[Buffer]",
         nvim_lsp = "[LSP]",
         luasnip = "[LuaSnip]",
@@ -195,7 +64,7 @@ cmp.setup {
 
 If you use [rafamadriz/friendly-snippets](https://github.com/rafamadriz/friendly-snippets), then exclude [global snippets](https://github.com/rafamadriz/friendly-snippets/blob/main/snippets/global.json) such as time and timeHMS since they show up in the live grep args prompt:
 ```lua
--- sample lazy.nvim configurationg
+-- sample lazy.nvim configuration
 {
   'L3MON4D3/LuaSnip',
   dependencies = { 'rafamadriz/friendly-snippets' },
