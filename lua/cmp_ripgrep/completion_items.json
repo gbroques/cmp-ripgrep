@@ -1,0 +1,1020 @@
+{
+  "generated": {
+    "from": "write_completion_items.js",
+    "at": "2025-08-14T08:35:30.162Z"
+  },
+  "versions": [
+    "ripgrep 14.1.1",
+    "pandoc 3.7.0.2"
+  ],
+  "completion_items": [
+    {
+      "label": "--no-column",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-column** flag (not listed below) disables them. The reverse can\n\n"
+      }
+    },
+    {
+      "label": "-e",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-e** *PATTERN*, **\\--regexp**=*PATTERN*\n\nA pattern to search for. This option can be provided multiple times,\nwhere all patterns given are searched, in addition to any patterns\nprovided by **-f/\\--file**. Lines matching at least one of the\nprovided patterns are printed. This flag can also be used when\nsearching for patterns that start with a dash.\n\nFor example, to search for the literal **-foo**:\n\n        rg -e -foo\n\nYou can also use the special **\\--** delimiter to indicate that no\nmore flags will be provided. Namely, the following is equivalent to\nthe above:\n\n        rg -- -foo\n\nWhen **-f/\\--file** or **-e/\\--regexp** is used, then ripgrep treats\nall positional arguments as files or directories to search.\n"
+      }
+    },
+    {
+      "label": "--regexp",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-e** *PATTERN*, **\\--regexp**=*PATTERN*\n\nA pattern to search for. This option can be provided multiple times,\nwhere all patterns given are searched, in addition to any patterns\nprovided by **-f/\\--file**. Lines matching at least one of the\nprovided patterns are printed. This flag can also be used when\nsearching for patterns that start with a dash.\n\nFor example, to search for the literal **-foo**:\n\n        rg -e -foo\n\nYou can also use the special **\\--** delimiter to indicate that no\nmore flags will be provided. Namely, the following is equivalent to\nthe above:\n\n        rg -- -foo\n\nWhen **-f/\\--file** or **-e/\\--regexp** is used, then ripgrep treats\nall positional arguments as files or directories to search.\n"
+      }
+    },
+    {
+      "label": "-f",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-f** *PATTERNFILE*, **\\--file**=*PATTERNFILE*\n\nSearch for patterns from the given file, with one pattern per line.\nWhen this flag is used multiple times or in combination with the\n**-e/\\--regexp** flag, then all patterns provided are searched. Empty\npattern lines will match all input lines, and the newline is not\ncounted as part of the pattern.\n\nA line is printed if and only if it matches at least one of the\npatterns.\n\nWhen *PATTERNFILE* is **-**, then **stdin** will be read for the\npatterns.\n\nWhen **-f/\\--file** or **-e/\\--regexp** is used, then ripgrep treats\nall positional arguments as files or directories to search.\n"
+      }
+    },
+    {
+      "label": "--file",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-f** *PATTERNFILE*, **\\--file**=*PATTERNFILE*\n\nSearch for patterns from the given file, with one pattern per line.\nWhen this flag is used multiple times or in combination with the\n**-e/\\--regexp** flag, then all patterns provided are searched. Empty\npattern lines will match all input lines, and the newline is not\ncounted as part of the pattern.\n\nA line is printed if and only if it matches at least one of the\npatterns.\n\nWhen *PATTERNFILE* is **-**, then **stdin** will be read for the\npatterns.\n\nWhen **-f/\\--file** or **-e/\\--regexp** is used, then ripgrep treats\nall positional arguments as files or directories to search.\n"
+      }
+    },
+    {
+      "label": "--pre",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--pre**=*COMMAND*\n\nFor each input *PATH*, this flag causes ripgrep to search the standard\noutput of *COMMAND* *PATH* instead of the contents of *PATH*. This\noption expects the *COMMAND* program to either be a path or to be\navailable in your **PATH**. Either an empty string *COMMAND* or the\n**\\--no-pre** flag will disable this behavior.\n\n**WARNING**\n\n:   When this flag is set, ripgrep will unconditionally spawn a\n    process for every file that is searched. Therefore, this can incur\n    an unnecessarily large performance penalty if you don\\'t otherwise\n    need the flexibility offered by this flag. One possible mitigation\n    to this is to use the **\\--pre-glob** flag to limit which files a\n    preprocessor is run with.\n\nA preprocessor is not run when ripgrep is searching stdin.\n\nWhen searching over sets of files that may require one of several\npreprocessors, *COMMAND* should be a wrapper program which first\nclassifies *PATH* based on magic numbers/content or based on the\n*PATH* name and then dispatches to an appropriate preprocessor. Each\n*COMMAND* also has its standard input connected to *PATH* for\nconvenience.\n\nFor example, a shell script for *COMMAND* might look like:\n\n        case \"$1\" in\n        *.pdf)\n            exec pdftotext \"$1\" -\n            ;;\n        *)\n            case $(file \"$1\") in\n            *Zstandard*)\n                exec pzstd -cdq\n                ;;\n            *)\n                exec cat\n                ;;\n            esac\n            ;;\n        esac\n\nThe above script uses **pdftotext** to convert a PDF file to plain\ntext. For all other files, the script uses the **file** utility to\nsniff the type of the file based on its contents. If it is a\ncompressed file in the Zstandard format, then **pzstd** is used to\ndecompress the contents to stdout.\n\nThis overrides the **-z/\\--search-zip** flag.\n"
+      }
+    },
+    {
+      "label": "--pre-glob",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--pre-glob**=*GLOB*\n\nThis flag works in conjunction with the **\\--pre** flag. Namely, when\none or more **\\--pre-glob** flags are given, then only files that\nmatch the given set of globs will be handed to the command specified\nby the **\\--pre** flag. Any non-matching files will be searched\nwithout using the preprocessor command.\n\nThis flag is useful when searching many files with the **\\--pre**\nflag. Namely, it provides the ability to avoid process overhead for\nfiles that don\\'t need preprocessing. For example, given the following\nshell script, *pre-pdftotext*:\n\n        #!/bin/sh\n        pdftotext \"$1\" -\n\nthen it is possible to use **\\--pre** *pre-pdftotext* **\\--pre-glob**\n*pre-pdftotext* command on files with a *.pdf* extension.\n\nMultiple **\\--pre-glob** flags may be used. Globbing rules match\n**gitignore** globs. Precede a glob with a **!** to exclude it.\n\nThis flag has no effect if the **\\--pre** flag is not used.\n"
+      }
+    },
+    {
+      "label": "-z",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-z**, **\\--search-zip**\n\nThis flag instructs ripgrep to search in compressed files. Currently\ngzip, bzip2, xz, LZ4, LZMA, Brotli and Zstd files are supported. This\noption expects the decompression binaries (such as **gzip**) to be\navailable in your **PATH**. If the required binaries are not found,\nthen ripgrep will not emit an error messages by default. Use the\n**\\--debug** flag to see more information.\n\nNote that this flag does not make ripgrep search archive formats as\ndirectory trees. It only makes ripgrep detect compressed files and\nthen decompress them before searching their contents as it would any\nother file.\n\nThis overrides the **\\--pre** flag.\n\nThis flag can be disabled with **\\--no-search-zip**.\n"
+      }
+    },
+    {
+      "label": "--search-zip",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-z**, **\\--search-zip**\n\nThis flag instructs ripgrep to search in compressed files. Currently\ngzip, bzip2, xz, LZ4, LZMA, Brotli and Zstd files are supported. This\noption expects the decompression binaries (such as **gzip**) to be\navailable in your **PATH**. If the required binaries are not found,\nthen ripgrep will not emit an error messages by default. Use the\n**\\--debug** flag to see more information.\n\nNote that this flag does not make ripgrep search archive formats as\ndirectory trees. It only makes ripgrep detect compressed files and\nthen decompress them before searching their contents as it would any\nother file.\n\nThis overrides the **\\--pre** flag.\n\nThis flag can be disabled with **\\--no-search-zip**.\n"
+      }
+    },
+    {
+      "label": "-s",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-s**, **\\--case-sensitive**\n\nExecute the search case sensitively. This is the default mode.\n\nThis is a global option that applies to all patterns given to ripgrep.\nIndividual patterns can still be matched case insensitively by using\ninline regex flags. For example, **(?i)abc** will match **abc** case\ninsensitively even when this flag is used.\n\nThis flag overrides the **-i/\\--ignore-case** and **-S/\\--smart-case**\nflags.\n"
+      }
+    },
+    {
+      "label": "--case-sensitive",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-s**, **\\--case-sensitive**\n\nExecute the search case sensitively. This is the default mode.\n\nThis is a global option that applies to all patterns given to ripgrep.\nIndividual patterns can still be matched case insensitively by using\ninline regex flags. For example, **(?i)abc** will match **abc** case\ninsensitively even when this flag is used.\n\nThis flag overrides the **-i/\\--ignore-case** and **-S/\\--smart-case**\nflags.\n"
+      }
+    },
+    {
+      "label": "--crlf",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--crlf**\n\nWhen enabled, ripgrep will treat CRLF (**\\\\r\\\\n**) as a line\nterminator instead of just **\\\\n**.\n\nPrincipally, this permits the line anchor assertions **\\^** and **\\$**\nin regex patterns to treat CRLF, CR or LF as line terminators instead\nof just LF. Note that they will never match between a CR and a LF.\nCRLF is treated as one single line terminator.\n\nWhen using the default regex engine, CRLF support can also be enabled\ninside the pattern with the **R** flag. For example, **(?R:\\$)** will\nmatch just before either CR or LF, but never between CR and LF.\n\nThis flag overrides **\\--null-data**.\n\nThis flag can be disabled with **\\--no-crlf**.\n"
+      }
+    },
+    {
+      "label": "--dfa-size-limit",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--dfa-size-limit**=*NUM+SUFFIX?*\n\nThe upper size limit of the regex DFA. The default limit is something\ngenerous for any single pattern or for many smallish patterns. This\nshould only be changed on very large regex inputs where the (slower)\nfallback regex engine may otherwise be used if the limit is reached.\n\nThe input format accepts suffixes of **K**, **M** or **G** which\ncorrespond to kilobytes, megabytes and gigabytes, respectively. If no\nsuffix is provided the input is treated as bytes.\n"
+      }
+    },
+    {
+      "label": "-E",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-E** *ENCODING*, **\\--encoding**=*ENCODING*\n\nSpecify the text encoding that ripgrep will use on all files searched.\nThe default value is **auto**, which will cause ripgrep to do a best\neffort automatic detection of encoding on a per-file basis. Automatic\ndetection in this case only applies to files that begin with a UTF-8\nor UTF-16 byte-order mark (BOM). No other automatic detection is\nperformed. One can also specify **none** which will then completely\ndisable BOM sniffing and always result in searching the raw bytes,\nincluding a BOM if it\\'s present, regardless of its encoding.\n\nOther supported values can be found in the list of labels here:\n*https://encoding.spec.whatwg.org/#concept-encoding-get*.\n\nFor more details on encoding and how ripgrep deals with it, see\n**GUIDE.md**.\n\nThe encoding detection that ripgrep uses can be reverted to its\nautomatic mode via the **\\--no-encoding** flag.\n"
+      }
+    },
+    {
+      "label": "--encoding",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-E** *ENCODING*, **\\--encoding**=*ENCODING*\n\nSpecify the text encoding that ripgrep will use on all files searched.\nThe default value is **auto**, which will cause ripgrep to do a best\neffort automatic detection of encoding on a per-file basis. Automatic\ndetection in this case only applies to files that begin with a UTF-8\nor UTF-16 byte-order mark (BOM). No other automatic detection is\nperformed. One can also specify **none** which will then completely\ndisable BOM sniffing and always result in searching the raw bytes,\nincluding a BOM if it\\'s present, regardless of its encoding.\n\nOther supported values can be found in the list of labels here:\n*https://encoding.spec.whatwg.org/#concept-encoding-get*.\n\nFor more details on encoding and how ripgrep deals with it, see\n**GUIDE.md**.\n\nThe encoding detection that ripgrep uses can be reverted to its\nautomatic mode via the **\\--no-encoding** flag.\n"
+      }
+    },
+    {
+      "label": "--engine",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--engine**=*ENGINE*\n\nSpecify which regular expression engine to use. When you choose a\nregex engine, it applies that choice for every regex provided to\nripgrep (e.g., via multiple **-e/\\--regexp** or **-f/\\--file** flags).\n\nAccepted values are **default**, **pcre2**, or **auto**.\n\nThe default value is **default**, which is usually the fastest and\nshould be good for most use cases. The **pcre2** engine is generally\nuseful when you want to use features such as look-around or\nbackreferences. **auto** will dynamically choose between supported\nregex engines depending on the features used in a pattern on a best\neffort basis.\n\nNote that the **pcre2** engine is an optional ripgrep feature. If\nPCRE2 wasn\\'t included in your build of ripgrep, then using this flag\nwill result in ripgrep printing an error message and exiting.\n\nThis overrides previous uses of the **-P/\\--pcre2** and\n**\\--auto-hybrid-regex** flags.\n"
+      }
+    },
+    {
+      "label": "-F",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-F**, **\\--fixed-strings**\n\nTreat all patterns as literals instead of as regular expressions. When\nthis flag is used, special regular expression meta characters such as\n**.(){}\\*+** should not need be escaped.\n\nThis flag can be disabled with **\\--no-fixed-strings**.\n"
+      }
+    },
+    {
+      "label": "--fixed-strings",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-F**, **\\--fixed-strings**\n\nTreat all patterns as literals instead of as regular expressions. When\nthis flag is used, special regular expression meta characters such as\n**.(){}\\*+** should not need be escaped.\n\nThis flag can be disabled with **\\--no-fixed-strings**.\n"
+      }
+    },
+    {
+      "label": "-i",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-i**, **\\--ignore-case**\n\nWhen this flag is provided, all patterns will be searched case\ninsensitively. The case insensitivity rules used by ripgrep\\'s default\nregex engine conform to Unicode\\'s \\\"simple\\\" case folding rules.\n\nThis is a global option that applies to all patterns given to ripgrep.\nIndividual patterns can still be matched case sensitively by using\ninline regex flags. For example, **(?-i)abc** will match **abc** case\nsensitively even when this flag is used.\n\nThis flag overrides **-s/\\--case-sensitive** and **-S/\\--smart-case**.\n"
+      }
+    },
+    {
+      "label": "--ignore-case",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-i**, **\\--ignore-case**\n\nWhen this flag is provided, all patterns will be searched case\ninsensitively. The case insensitivity rules used by ripgrep\\'s default\nregex engine conform to Unicode\\'s \\\"simple\\\" case folding rules.\n\nThis is a global option that applies to all patterns given to ripgrep.\nIndividual patterns can still be matched case sensitively by using\ninline regex flags. For example, **(?-i)abc** will match **abc** case\nsensitively even when this flag is used.\n\nThis flag overrides **-s/\\--case-sensitive** and **-S/\\--smart-case**.\n"
+      }
+    },
+    {
+      "label": "-v",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-v**, **\\--invert-match**\n\nThis flag inverts matching. That is, instead of printing lines that\nmatch, ripgrep will print lines that don\\'t match.\n\nNote that this only inverts line-by-line matching. For example,\ncombining this flag with **-l/\\--files-with-matches** will emit files\nthat contain any lines that do not match the patterns given. That\\'s\nnot the same as, for example, **\\--files-without-match**, which will\nemit files that do not contain any matching lines.\n\nThis flag can be disabled with **\\--no-invert-match**.\n"
+      }
+    },
+    {
+      "label": "--invert-match",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-v**, **\\--invert-match**\n\nThis flag inverts matching. That is, instead of printing lines that\nmatch, ripgrep will print lines that don\\'t match.\n\nNote that this only inverts line-by-line matching. For example,\ncombining this flag with **-l/\\--files-with-matches** will emit files\nthat contain any lines that do not match the patterns given. That\\'s\nnot the same as, for example, **\\--files-without-match**, which will\nemit files that do not contain any matching lines.\n\nThis flag can be disabled with **\\--no-invert-match**.\n"
+      }
+    },
+    {
+      "label": "-x",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-x**, **\\--line-regexp**\n\nWhen enabled, ripgrep will only show matches surrounded by line\nboundaries. This is equivalent to surrounding every pattern with\n**\\^** and **\\$**. In other words, this only prints lines where the\nentire line participates in a match.\n\nThis overrides the **-w/\\--word-regexp** flag.\n"
+      }
+    },
+    {
+      "label": "--line-regexp",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-x**, **\\--line-regexp**\n\nWhen enabled, ripgrep will only show matches surrounded by line\nboundaries. This is equivalent to surrounding every pattern with\n**\\^** and **\\$**. In other words, this only prints lines where the\nentire line participates in a match.\n\nThis overrides the **-w/\\--word-regexp** flag.\n"
+      }
+    },
+    {
+      "label": "-m",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-m** *NUM*, **\\--max-count**=*NUM*\n\nLimit the number of matching lines per file searched to *NUM*.\n\nNote that **0** is a legal value but not likely to be useful. When\nused, ripgrep won\\'t search anything.\n"
+      }
+    },
+    {
+      "label": "--max-count",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-m** *NUM*, **\\--max-count**=*NUM*\n\nLimit the number of matching lines per file searched to *NUM*.\n\nNote that **0** is a legal value but not likely to be useful. When\nused, ripgrep won\\'t search anything.\n"
+      }
+    },
+    {
+      "label": "--mmap",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--mmap**\n\nWhen enabled, ripgrep will search using memory maps when possible.\nThis is enabled by default when ripgrep thinks it will be faster.\n\nMemory map searching cannot be used in all circumstances. For example,\nwhen searching virtual files or streams likes **stdin**. In such\ncases, memory maps will not be used even when this flag is enabled.\n\nNote that ripgrep may abort unexpectedly when memory maps are used if\nit searches a file that is simultaneously truncated. Users can opt out\nof this possibility by disabling memory maps.\n\nThis flag can be disabled with **\\--no-mmap**.\n"
+      }
+    },
+    {
+      "label": "-U",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-U**, **\\--multiline**\n\nThis flag enable searching across multiple lines.\n\nWhen multiline mode is enabled, ripgrep will lift the restriction that\na match cannot include a line terminator. For example, when multiline\nmode is not enabled (the default), then the regex **\\\\p{any}** will\nmatch any Unicode codepoint other than **\\\\n**. Similarly, the regex\n**\\\\n** is explicitly forbidden, and if you try to use it, ripgrep\nwill return an error. However, when multiline mode is enabled,\n**\\\\p{any}** will match any Unicode codepoint, including **\\\\n**, and\nregexes like **\\\\n** are permitted.\n\nAn important caveat is that multiline mode does not change the match\nsemantics of **.**. Namely, in most regex matchers, a **.** will by\ndefault match any character other than **\\\\n**, and this is true in\nripgrep as well. In order to make **.** match **\\\\n**, you must enable\nthe \\\"dot all\\\" flag inside the regex. For example, both **(?s).** and\n**(?s:.)** have the same semantics, where **.** will match any\ncharacter, including **\\\\n**. Alternatively, the\n**\\--multiline-dotall** flag may be passed to make the \\\"dot all\\\"\nbehavior the default. This flag only applies when multiline search is\nenabled.\n\nThere is no limit on the number of the lines that a single match can\nspan.\n\n**WARNING**: Because of how the underlying regex engine works,\nmultiline searches may be slower than normal line-oriented searches,\nand they may also use more memory. In particular, when multiline mode\nis enabled, ripgrep requires that each file it searches is laid out\ncontiguously in memory (either by reading it onto the heap or by\nmemory-mapping it). Things that cannot be memory-mapped (such as\n**stdin**) will be consumed until EOF before searching can begin. In\ngeneral, ripgrep will only do these things when necessary.\nSpecifically, if the **-U/\\--multiline** flag is provided but the\nregex does not contain patterns that would match **\\\\n** characters,\nthen ripgrep will automatically avoid reading each file into memory\nbefore searching it. Nevertheless, if you only care about matches\nspanning at most one line, then it is always better to disable\nmultiline mode.\n\nThis overrides the **\\--stop-on-nonmatch** flag.\n\nThis flag can be disabled with **\\--no-multiline**.\n"
+      }
+    },
+    {
+      "label": "--multiline",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-U**, **\\--multiline**\n\nThis flag enable searching across multiple lines.\n\nWhen multiline mode is enabled, ripgrep will lift the restriction that\na match cannot include a line terminator. For example, when multiline\nmode is not enabled (the default), then the regex **\\\\p{any}** will\nmatch any Unicode codepoint other than **\\\\n**. Similarly, the regex\n**\\\\n** is explicitly forbidden, and if you try to use it, ripgrep\nwill return an error. However, when multiline mode is enabled,\n**\\\\p{any}** will match any Unicode codepoint, including **\\\\n**, and\nregexes like **\\\\n** are permitted.\n\nAn important caveat is that multiline mode does not change the match\nsemantics of **.**. Namely, in most regex matchers, a **.** will by\ndefault match any character other than **\\\\n**, and this is true in\nripgrep as well. In order to make **.** match **\\\\n**, you must enable\nthe \\\"dot all\\\" flag inside the regex. For example, both **(?s).** and\n**(?s:.)** have the same semantics, where **.** will match any\ncharacter, including **\\\\n**. Alternatively, the\n**\\--multiline-dotall** flag may be passed to make the \\\"dot all\\\"\nbehavior the default. This flag only applies when multiline search is\nenabled.\n\nThere is no limit on the number of the lines that a single match can\nspan.\n\n**WARNING**: Because of how the underlying regex engine works,\nmultiline searches may be slower than normal line-oriented searches,\nand they may also use more memory. In particular, when multiline mode\nis enabled, ripgrep requires that each file it searches is laid out\ncontiguously in memory (either by reading it onto the heap or by\nmemory-mapping it). Things that cannot be memory-mapped (such as\n**stdin**) will be consumed until EOF before searching can begin. In\ngeneral, ripgrep will only do these things when necessary.\nSpecifically, if the **-U/\\--multiline** flag is provided but the\nregex does not contain patterns that would match **\\\\n** characters,\nthen ripgrep will automatically avoid reading each file into memory\nbefore searching it. Nevertheless, if you only care about matches\nspanning at most one line, then it is always better to disable\nmultiline mode.\n\nThis overrides the **\\--stop-on-nonmatch** flag.\n\nThis flag can be disabled with **\\--no-multiline**.\n"
+      }
+    },
+    {
+      "label": "--multiline-dotall",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--multiline-dotall**\n\nThis flag enables \\\"dot all\\\" mode in all regex patterns. This causes\n**.** to match line terminators when multiline searching is enabled.\nThis flag has no effect if multiline searching isn\\'t enabled with the\n**-U/\\--multiline** flag.\n\nNormally, a **.** will match any character except line terminators.\nWhile this behavior typically isn\\'t relevant for line-oriented\nmatching (since matches can span at most one line), this can be useful\nwhen searching with the **-U/\\--multiline** flag. By default,\nmultiline mode runs without \\\"dot all\\\" mode enabled.\n\nThis flag is generally intended to be used in an alias or your ripgrep\nconfig file if you prefer \\\"dot all\\\" semantics by default. Note that\nregardless of whether this flag is used, \\\"dot all\\\" semantics can\nstill be controlled via inline flags in the regex pattern itself,\ne.g., **(?s:.)** always enables \\\"dot all\\\" whereas **(?-s:.)** always\ndisables \\\"dot all\\\". Moreover, you can use character classes like\n**\\\\p{any}** to match any Unicode codepoint regardless of whether\n\\\"dot all\\\" mode is enabled or not.\n\nThis flag can be disabled with **\\--no-multiline-dotall**.\n"
+      }
+    },
+    {
+      "label": "--no-unicode",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-unicode**\n\nThis flag disables Unicode mode for all patterns given to ripgrep.\n\nBy default, ripgrep will enable \\\"Unicode mode\\\" in all of its\nregexes. This has a number of consequences:\n\n- **.** will only match valid UTF-8 encoded Unicode scalar values.\n\n- Classes like **\\\\w**, **\\\\s**, **\\\\d** are all Unicode aware and\n  much bigger than their ASCII only versions.\n\n- Case insensitive matching will use Unicode case folding.\n\n- A large array of classes like **\\\\p{Emoji}** are available.\n  (Although the specific set of classes available varies based on the\n  regex engine. In general, the default regex engine has more classes\n  available to it.)\n\n- Word boundaries (**\\\\b** and **\\\\B**) use the Unicode definition of\n  a word character.\n\nIn some cases it can be desirable to turn these things off. This flag\nwill do exactly that. For example, Unicode mode can sometimes have a\nnegative impact on performance, especially when things like **\\\\w**\nare used frequently (including via bounded repetitions like\n**\\\\w{100}**) when only their ASCII interpretation is needed.\n\nThis flag can be disabled with **\\--unicode**.\n"
+      }
+    },
+    {
+      "label": "--null-data",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--null-data**\n\nEnabling this flag causes ripgrep to use **NUL** as a line terminator\ninstead of the default of **\\\\n**.\n\nThis is useful when searching large binary files that would otherwise\nhave very long lines if **\\\\n** were used as the line terminator. In\nparticular, ripgrep requires that, at a minimum, each line must fit\ninto memory. Using **NUL** instead can be a useful stopgap to keep\nmemory requirements low and avoid OOM (out of memory) conditions.\n\nThis is also useful for processing NUL delimited data, such as that\nemitted when using ripgrep\\'s **-0/\\--null** flag or **find**\\'s\n**\\--print0** flag.\n\nUsing this flag implies **-a/\\--text**. It also overrides **\\--crlf**.\n"
+      }
+    },
+    {
+      "label": "-P",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-P**, **\\--pcre2**\n\nWhen this flag is present, ripgrep will use the PCRE2 regex engine\ninstead of its default regex engine.\n\nThis is generally useful when you want to use features such as\nlook-around or backreferences.\n\nUsing this flag is the same as passing **\\--engine=pcre2**. Users may\ninstead elect to use **\\--engine=auto** to ask ripgrep to\nautomatically select the right regex engine based on the patterns\ngiven. This flag and the **\\--engine** flag override one another.\n\nNote that PCRE2 is an optional ripgrep feature. If PCRE2 wasn\\'t\nincluded in your build of ripgrep, then using this flag will result in\nripgrep printing an error message and exiting. PCRE2 may also have\nworse user experience in some cases, since it has fewer introspection\nAPIs than ripgrep\\'s default regex engine. For example, if you use a\n**\\\\n** in a PCRE2 regex without the **-U/\\--multiline** flag, then\nripgrep will silently fail to match anything instead of reporting an\nerror immediately (like it does with the default regex engine).\n\nThis flag can be disabled with **\\--no-pcre2**.\n"
+      }
+    },
+    {
+      "label": "--pcre2",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-P**, **\\--pcre2**\n\nWhen this flag is present, ripgrep will use the PCRE2 regex engine\ninstead of its default regex engine.\n\nThis is generally useful when you want to use features such as\nlook-around or backreferences.\n\nUsing this flag is the same as passing **\\--engine=pcre2**. Users may\ninstead elect to use **\\--engine=auto** to ask ripgrep to\nautomatically select the right regex engine based on the patterns\ngiven. This flag and the **\\--engine** flag override one another.\n\nNote that PCRE2 is an optional ripgrep feature. If PCRE2 wasn\\'t\nincluded in your build of ripgrep, then using this flag will result in\nripgrep printing an error message and exiting. PCRE2 may also have\nworse user experience in some cases, since it has fewer introspection\nAPIs than ripgrep\\'s default regex engine. For example, if you use a\n**\\\\n** in a PCRE2 regex without the **-U/\\--multiline** flag, then\nripgrep will silently fail to match anything instead of reporting an\nerror immediately (like it does with the default regex engine).\n\nThis flag can be disabled with **\\--no-pcre2**.\n"
+      }
+    },
+    {
+      "label": "--regex-size-limit",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--regex-size-limit**=*NUM+SUFFIX?*\n\nThe size limit of the compiled regex, where the compiled regex\ngenerally corresponds to a single object in memory that can match all\nof the patterns provided to ripgrep. The default limit is generous\nenough that most reasonable patterns (or even a small number of them)\nshould fit.\n\nThis useful to change when you explicitly want to let ripgrep spend\npotentially much more time and/or memory building a regex matcher.\n\nThe input format accepts suffixes of **K**, **M** or **G** which\ncorrespond to kilobytes, megabytes and gigabytes, respectively. If no\nsuffix is provided the input is treated as bytes.\n"
+      }
+    },
+    {
+      "label": "-S",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-S**, **\\--smart-case**\n\nThis flag instructs ripgrep to searches case insensitively if the\npattern is all lowercase. Otherwise, ripgrep will search case\nsensitively.\n\nA pattern is considered all lowercase if both of the following rules\nhold:\n\n- First, the pattern contains at least one literal character. For\n  example, **a\\\\w** contains a literal (**a**) but just **\\\\w** does\n  not.\n\n- Second, of the literals in the pattern, none of them are considered\n  to be uppercase according to Unicode. For example, **foo\\\\pL** has\n  no uppercase literals but **Foo\\\\pL** does.\n\nThis overrides the **-s/\\--case-sensitive** and **-i/\\--ignore-case**\nflags.\n"
+      }
+    },
+    {
+      "label": "--smart-case",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-S**, **\\--smart-case**\n\nThis flag instructs ripgrep to searches case insensitively if the\npattern is all lowercase. Otherwise, ripgrep will search case\nsensitively.\n\nA pattern is considered all lowercase if both of the following rules\nhold:\n\n- First, the pattern contains at least one literal character. For\n  example, **a\\\\w** contains a literal (**a**) but just **\\\\w** does\n  not.\n\n- Second, of the literals in the pattern, none of them are considered\n  to be uppercase according to Unicode. For example, **foo\\\\pL** has\n  no uppercase literals but **Foo\\\\pL** does.\n\nThis overrides the **-s/\\--case-sensitive** and **-i/\\--ignore-case**\nflags.\n"
+      }
+    },
+    {
+      "label": "--stop-on-nonmatch",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--stop-on-nonmatch**\n\nEnabling this option will cause ripgrep to stop reading a file once it\nencounters a non-matching line after it has encountered a matching\nline. This is useful if it is expected that all matches in a given\nfile will be on sequential lines, for example due to the lines being\nsorted.\n\nThis overrides the **-U/\\--multiline** flag.\n"
+      }
+    },
+    {
+      "label": "-a",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-a**, **\\--text**\n\nThis flag instructs ripgrep to search binary files as if they were\ntext. When this flag is present, ripgrep\\'s binary file detection is\ndisabled. This means that when a binary file is searched, its contents\nmay be printed if there is a match. This may cause escape codes to be\nprinted that alter the behavior of your terminal.\n\nWhen binary file detection is enabled, it is imperfect. In general, it\nuses a simple heuristic. If a **NUL** byte is seen during search, then\nthe file is considered binary and searching stops (unless this flag is\npresent). Alternatively, if the **\\--binary** flag is used, then\nripgrep will only quit when it sees a **NUL** byte after it sees a\nmatch (or searches the entire file).\n\nThis flag overrides the **\\--binary** flag.\n\nThis flag can be disabled with **\\--no-text**.\n"
+      }
+    },
+    {
+      "label": "--text",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-a**, **\\--text**\n\nThis flag instructs ripgrep to search binary files as if they were\ntext. When this flag is present, ripgrep\\'s binary file detection is\ndisabled. This means that when a binary file is searched, its contents\nmay be printed if there is a match. This may cause escape codes to be\nprinted that alter the behavior of your terminal.\n\nWhen binary file detection is enabled, it is imperfect. In general, it\nuses a simple heuristic. If a **NUL** byte is seen during search, then\nthe file is considered binary and searching stops (unless this flag is\npresent). Alternatively, if the **\\--binary** flag is used, then\nripgrep will only quit when it sees a **NUL** byte after it sees a\nmatch (or searches the entire file).\n\nThis flag overrides the **\\--binary** flag.\n\nThis flag can be disabled with **\\--no-text**.\n"
+      }
+    },
+    {
+      "label": "-j",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-j** *NUM*, **\\--threads**=*NUM*\n\nThis flag sets the approximate number of threads to use. A value of\n**0** (which is the default) causes ripgrep to choose the thread count\nusing heuristics.\n"
+      }
+    },
+    {
+      "label": "--threads",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-j** *NUM*, **\\--threads**=*NUM*\n\nThis flag sets the approximate number of threads to use. A value of\n**0** (which is the default) causes ripgrep to choose the thread count\nusing heuristics.\n"
+      }
+    },
+    {
+      "label": "-w",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-w**, **\\--word-regexp**\n\nWhen enabled, ripgrep will only show matches surrounded by word\nboundaries. This is equivalent to surrounding every pattern with\n**\\\\b{start-half}** and **\\\\b{end-half}**.\n\nThis overrides the **-x/\\--line-regexp** flag.\n"
+      }
+    },
+    {
+      "label": "--word-regexp",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-w**, **\\--word-regexp**\n\nWhen enabled, ripgrep will only show matches surrounded by word\nboundaries. This is equivalent to surrounding every pattern with\n**\\\\b{start-half}** and **\\\\b{end-half}**.\n\nThis overrides the **-x/\\--line-regexp** flag.\n"
+      }
+    },
+    {
+      "label": "--auto-hybrid-regex",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--auto-hybrid-regex**\n\nDEPRECATED. Use **\\--engine** instead.\n\nWhen this flag is used, ripgrep will dynamically choose between\nsupported regex engines depending on the features used in a pattern.\nWhen ripgrep chooses a regex engine, it applies that choice for every\nregex provided to ripgrep (e.g., via multiple **-e/\\--regexp** or\n**-f/\\--file** flags).\n\nAs an example of how this flag might behave, ripgrep will attempt to\nuse its default finite automata based regex engine whenever the\npattern can be successfully compiled with that regex engine. If PCRE2\nis enabled and if the pattern given could not be compiled with the\ndefault regex engine, then PCRE2 will be automatically used for\nsearching. If PCRE2 isn\\'t available, then this flag has no effect\nbecause there is only one regex engine to choose from.\n\nIn the future, ripgrep may adjust its heuristics for how it decides\nwhich regex engine to use. In general, the heuristics will be limited\nto a static analysis of the patterns, and not to any specific runtime\nbehavior observed while searching files.\n\nThe primary downside of using this flag is that it may not always be\nobvious which regex engine ripgrep uses, and thus, the match semantics\nor performance profile of ripgrep may subtly and unexpectedly change.\nHowever, in many cases, all regex engines will agree on what\nconstitutes a match and it can be nice to transparently support more\nadvanced regex features like look-around and backreferences without\nexplicitly needing to enable them.\n\nThis flag can be disabled with **\\--no-auto-hybrid-regex**.\n"
+      }
+    },
+    {
+      "label": "--no-pcre2-unicode",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-pcre2-unicode**\n\nDEPRECATED. Use **\\--no-unicode** instead.\n\nNote that Unicode mode is enabled by default.\n\nThis flag can be disabled with **\\--pcre2-unicode**.\n"
+      }
+    },
+    {
+      "label": "--binary",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--binary**\n\nEnabling this flag will cause ripgrep to search binary files. By\ndefault, ripgrep attempts to automatically skip binary files in order\nto improve the relevance of results and make the search faster.\n\nBinary files are heuristically detected based on whether they contain\na **NUL** byte or not. By default (without this flag set), once a\n**NUL** byte is seen, ripgrep will stop searching the file. Usually,\n**NUL** bytes occur in the beginning of most binary files. If a\n**NUL** byte occurs after a match, then ripgrep will not print the\nmatch, stop searching that file, and emit a warning that some matches\nare being suppressed.\n\nIn contrast, when this flag is provided, ripgrep will continue\nsearching a file even if a **NUL** byte is found. In particular, if a\n**NUL** byte is found then ripgrep will continue searching until\neither a match is found or the end of the file is reached, whichever\ncomes sooner. If a match is found, then ripgrep will stop and print a\nwarning saying that the search stopped prematurely.\n\nIf you want ripgrep to search a file without any special **NUL** byte\nhandling at all (and potentially print binary data to stdout), then\nyou should use the **-a/\\--text** flag.\n\nThe **\\--binary** flag is a flag for controlling ripgrep\\'s automatic\nfiltering mechanism. As such, it does not need to be used when\nsearching a file explicitly or when searching stdin. That is, it is\nonly applicable when recursively searching a directory.\n\nWhen the **-u/\\--unrestricted** flag is provided for a third time,\nthen this flag is automatically enabled.\n\nThis flag overrides the **-a/\\--text** flag.\n\nThis flag can be disabled with **\\--no-binary**.\n"
+      }
+    },
+    {
+      "label": "-L",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-L**, **\\--follow**\n\nThis flag instructs ripgrep to follow symbolic links while traversing\ndirectories. This behavior is disabled by default. Note that ripgrep\nwill check for symbolic link loops and report errors if it finds one.\nripgrep will also report errors for broken links. To suppress error\nmessages, use the **\\--no-messages** flag.\n\nThis flag can be disabled with **\\--no-follow**.\n"
+      }
+    },
+    {
+      "label": "--follow",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-L**, **\\--follow**\n\nThis flag instructs ripgrep to follow symbolic links while traversing\ndirectories. This behavior is disabled by default. Note that ripgrep\nwill check for symbolic link loops and report errors if it finds one.\nripgrep will also report errors for broken links. To suppress error\nmessages, use the **\\--no-messages** flag.\n\nThis flag can be disabled with **\\--no-follow**.\n"
+      }
+    },
+    {
+      "label": "-g",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-g** *GLOB*, **\\--glob**=*GLOB*\n\nInclude or exclude files and directories for searching that match the\ngiven glob. This always overrides any other ignore logic. Multiple\nglob flags may be used. Globbing rules match **.gitignore** globs.\nPrecede a glob with a **!** to exclude it. If multiple globs match a\nfile or directory, the glob given later in the command line takes\nprecedence.\n\nAs an extension, globs support specifying alternatives: **-g\n\\'***ab{c,d}\\****\\'** is equivalent to **-g** *abc* **-g** *abd.*\nEmpty alternatives like **-g \\'***ab{,c}***\\'** are not currently\nsupported. Note that this syntax extension is also currently enabled\nin **gitignore** files, even though this syntax isn\\'t supported by\ngit itself. ripgrep may disable this syntax extension in gitignore\nfiles, but it will always remain available via the **-g/\\--glob**\nflag.\n\nWhen this flag is set, every file and directory is applied to it to\ntest for a match. For example, if you only want to search in a\nparticular directory *foo*, then **-g** *foo* is incorrect because\n*foo/bar* does not match the glob *foo*. Instead, you should use **-g\n\\'***foo/\\*\\****\\'.**\n"
+      }
+    },
+    {
+      "label": "--glob",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-g** *GLOB*, **\\--glob**=*GLOB*\n\nInclude or exclude files and directories for searching that match the\ngiven glob. This always overrides any other ignore logic. Multiple\nglob flags may be used. Globbing rules match **.gitignore** globs.\nPrecede a glob with a **!** to exclude it. If multiple globs match a\nfile or directory, the glob given later in the command line takes\nprecedence.\n\nAs an extension, globs support specifying alternatives: **-g\n\\'***ab{c,d}\\****\\'** is equivalent to **-g** *abc* **-g** *abd.*\nEmpty alternatives like **-g \\'***ab{,c}***\\'** are not currently\nsupported. Note that this syntax extension is also currently enabled\nin **gitignore** files, even though this syntax isn\\'t supported by\ngit itself. ripgrep may disable this syntax extension in gitignore\nfiles, but it will always remain available via the **-g/\\--glob**\nflag.\n\nWhen this flag is set, every file and directory is applied to it to\ntest for a match. For example, if you only want to search in a\nparticular directory *foo*, then **-g** *foo* is incorrect because\n*foo/bar* does not match the glob *foo*. Instead, you should use **-g\n\\'***foo/\\*\\****\\'.**\n"
+      }
+    },
+    {
+      "label": "--glob-case-insensitive",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--glob-case-insensitive**\n\nProcess all glob patterns given with the **-g/\\--glob** flag case\ninsensitively. This effectively treats **-g/\\--glob** as **\\--iglob**.\n\nThis flag can be disabled with **\\--no-glob-case-insensitive**.\n"
+      }
+    },
+    {
+      "label": "-.",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-.**, **\\--hidden**\n\nSearch hidden files and directories. By default, hidden files and\ndirectories are skipped. Note that if a hidden file or a directory is\nwhitelisted in an ignore file, then it will be searched even if this\nflag isn\\'t provided. Similarly if a hidden file or directory is given\nexplicitly as an argument to ripgrep.\n\nA file or directory is considered hidden if its base name starts with\na dot character (**.**). On operating systems which support a\n\\\"hidden\\\" file attribute, like Windows, files with this attribute are\nalso considered hidden.\n\nThis flag can be disabled with **\\--no-hidden**.\n"
+      }
+    },
+    {
+      "label": "--hidden",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-.**, **\\--hidden**\n\nSearch hidden files and directories. By default, hidden files and\ndirectories are skipped. Note that if a hidden file or a directory is\nwhitelisted in an ignore file, then it will be searched even if this\nflag isn\\'t provided. Similarly if a hidden file or directory is given\nexplicitly as an argument to ripgrep.\n\nA file or directory is considered hidden if its base name starts with\na dot character (**.**). On operating systems which support a\n\\\"hidden\\\" file attribute, like Windows, files with this attribute are\nalso considered hidden.\n\nThis flag can be disabled with **\\--no-hidden**.\n"
+      }
+    },
+    {
+      "label": "--iglob",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--iglob**=*GLOB*\n\nInclude or exclude files and directories for searching that match the\ngiven glob. This always overrides any other ignore logic. Multiple\nglob flags may be used. Globbing rules match **.gitignore** globs.\nPrecede a glob with a **!** to exclude it. If multiple globs match a\nfile or directory, the glob given later in the command line takes\nprecedence. Globs used via this flag are matched case insensitively.\n"
+      }
+    },
+    {
+      "label": "--ignore-file",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--ignore-file**=*PATH*\n\nSpecifies a path to one or more **gitignore** formatted rules files.\nThese patterns are applied after the patterns found in **.gitignore**,\n**.rgignore** and **.ignore** are applied and are matched relative to\nthe current working directory. Multiple additional ignore files can be\nspecified by using this flag repeatedly. When specifying multiple\nignore files, earlier files have lower precedence than later files.\n\nIf you are looking for a way to include or exclude files and\ndirectories directly on the command line, then use **-g/\\--glob**\ninstead.\n"
+      }
+    },
+    {
+      "label": "--ignore-file-case-insensitive",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--ignore-file-case-insensitive**\n\nProcess ignore files (**.gitignore**, **.ignore**, etc.) case\ninsensitively. Note that this comes with a performance penalty and is\nmost useful on case insensitive file systems (such as Windows).\n\nThis flag can be disabled with **\\--no-ignore-file-case-insensitive**.\n"
+      }
+    },
+    {
+      "label": "-d",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-d** *NUM*, **\\--max-depth**=*NUM*\n\nThis flag limits the depth of directory traversal to *NUM* levels\nbeyond the paths given. A value of **0** only searches the explicitly\ngiven paths themselves.\n\nFor example, **rg \\--max-depth 0** *dir/* is a no-op because *dir/*\nwill not be descended into. **rg \\--max-depth 1** *dir/* will search\nonly the direct children of *dir*.\n\nAn alternative spelling for this flag is **\\--maxdepth**.\n"
+      }
+    },
+    {
+      "label": "--max-depth",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-d** *NUM*, **\\--max-depth**=*NUM*\n\nThis flag limits the depth of directory traversal to *NUM* levels\nbeyond the paths given. A value of **0** only searches the explicitly\ngiven paths themselves.\n\nFor example, **rg \\--max-depth 0** *dir/* is a no-op because *dir/*\nwill not be descended into. **rg \\--max-depth 1** *dir/* will search\nonly the direct children of *dir*.\n\nAn alternative spelling for this flag is **\\--maxdepth**.\n"
+      }
+    },
+    {
+      "label": "--max-filesize",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--max-filesize**=*NUM+SUFFIX?*\n\nIgnore files larger than *NUM* in size. This does not apply to\ndirectories.\n\nThe input format accepts suffixes of **K**, **M** or **G** which\ncorrespond to kilobytes, megabytes and gigabytes, respectively. If no\nsuffix is provided the input is treated as bytes.\n\nExamples: **\\--max-filesize 50K** or **\\--max-filesize 80M**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore**\n\nWhen set, ignore files such as **.gitignore**, **.ignore** and\n**.rgignore** will not be respected. This implies\n**\\--no-ignore-dot**, **\\--no-ignore-exclude**,\n**\\--no-ignore-global**, **\\--no-ignore-parent** and\n**\\--no-ignore-vcs**.\n\nThis does not imply **\\--no-ignore-files**, since **\\--ignore-file**\nis specified explicitly as a command line argument.\n\nWhen given only once, the **-u/\\--unrestricted** flag is identical in\nbehavior to this flag and can be considered an alias. However,\nsubsequent **-u/\\--unrestricted** flags have additional effects.\n\nThis flag can be disabled with **\\--ignore**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-dot",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-dot**\n\nDon\\'t respect filter rules from **.ignore** or **.rgignore** files.\n\nThis does not impact whether ripgrep will ignore files and directories\nwhose names begin with a dot. For that, see the **-./\\--hidden** flag.\nThis flag also does not impact whether filter rules from\n**.gitignore** files are respected.\n\nThis flag can be disabled with **\\--ignore-dot**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-exclude",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-exclude**\n\nDon\\'t respect filter rules from files that are manually configured\nfor the repository. For example, this includes **git**\\'s\n**.git/info/exclude**.\n\nThis flag can be disabled with **\\--ignore-exclude**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-files",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-files**\n\nWhen set, any **\\--ignore-file** flags, even ones that come after this\nflag, are ignored.\n\nThis flag can be disabled with **\\--ignore-files**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-global",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-global**\n\nDon\\'t respect filter rules from ignore files that come from\n\\\"global\\\" sources such as **git**\\'s **core.excludesFile**\nconfiguration option (which defaults to\n**\\$HOME/.config/git/ignore**).\n\nThis flag can be disabled with **\\--ignore-global**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-parent",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-parent**\n\nWhen this flag is set, filter rules from ignore files found in parent\ndirectories are not respected. By default, ripgrep will ascend the\nparent directories of the current working directory to look for any\napplicable ignore files that should be applied. In some cases this may\nnot be desirable.\n\nThis flag can be disabled with **\\--ignore-parent**.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-vcs",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-vcs**\n\nWhen given, filter rules from source control ignore files (e.g.,\n**.gitignore**) are not respected. By default, ripgrep respects\n**git**\\'s ignore rules for automatic filtering. In some cases, it may\nnot be desirable to respect the source control\\'s ignore rules and\ninstead only respect rules in **.ignore** or **.rgignore**.\n\nThis flag implies **\\--no-ignore-parent** for source control ignore\nfiles as well.\n\nThis flag can be disabled with **\\--ignore-vcs**.\n"
+      }
+    },
+    {
+      "label": "--no-require-git",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-require-git**\n\nWhen this flag is given, source control ignore files such as\n**.gitignore** are respected even if no **git** repository is present.\n\nBy default, ripgrep will only respect filter rules from source control\nignore files when ripgrep detects that the search is executed inside a\nsource control repository. For example, when a **.git** directory is\nobserved.\n\nThis flag relaxes the default restriction. For example, it might be\nuseful when the contents of a **git** repository are stored or copied\nsomewhere, but where the repository state is absent.\n\nThis flag can be disabled with **\\--require-git**.\n"
+      }
+    },
+    {
+      "label": "--one-file-system",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--one-file-system**\n\nWhen enabled, ripgrep will not cross file system boundaries relative\nto where the search started from.\n\nNote that this applies to each path argument given to ripgrep. For\nexample, in the command\n\n        rg --one-file-system /foo/bar /quux/baz\n\nripgrep will search both */foo/bar* and */quux/baz* even if they are\non different file systems, but will not cross a file system boundary\nwhen traversing each path\\'s directory tree.\n\nThis is similar to **find**\\'s **-xdev** or **-mount** flag.\n\nThis flag can be disabled with **\\--no-one-file-system**.\n"
+      }
+    },
+    {
+      "label": "-t",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-t** *TYPE*, **\\--type**=*TYPE*\n\nThis flag limits ripgrep to searching files matching *TYPE*. Multiple\n**-t/\\--type** flags may be provided.\n\nThis flag supports the special value **all**, which will behave as if\n**-t/\\--type** was provided for every file type supported by ripgrep\n(including any custom file types). The end result is that\n**\\--type=all** causes ripgrep to search in \\\"whitelist\\\" mode, where\nit will only search files it recognizes via its type definitions.\n\nNote that this flag has lower precedence than both the **-g/\\--glob**\nflag and any rules found in ignore files.\n\nTo see the list of available file types, use the **\\--type-list**\nflag.\n"
+      }
+    },
+    {
+      "label": "--type",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-t** *TYPE*, **\\--type**=*TYPE*\n\nThis flag limits ripgrep to searching files matching *TYPE*. Multiple\n**-t/\\--type** flags may be provided.\n\nThis flag supports the special value **all**, which will behave as if\n**-t/\\--type** was provided for every file type supported by ripgrep\n(including any custom file types). The end result is that\n**\\--type=all** causes ripgrep to search in \\\"whitelist\\\" mode, where\nit will only search files it recognizes via its type definitions.\n\nNote that this flag has lower precedence than both the **-g/\\--glob**\nflag and any rules found in ignore files.\n\nTo see the list of available file types, use the **\\--type-list**\nflag.\n"
+      }
+    },
+    {
+      "label": "-T",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-T** *TYPE*, **\\--type-not**=*TYPE*\n\nDo not search files matching *TYPE*. Multiple **-T/\\--type-not** flags\nmay be provided. Use the **\\--type-list** flag to list all available\ntypes.\n\nThis flag supports the special value **all**, which will behave as if\n**-T/\\--type-not** was provided for every file type supported by\nripgrep (including any custom file types). The end result is that\n**\\--type-not=all** causes ripgrep to search in \\\"blacklist\\\" mode,\nwhere it will only search files that are unrecognized by its type\ndefinitions.\n\nTo see the list of available file types, use the **\\--type-list**\nflag.\n"
+      }
+    },
+    {
+      "label": "--type-not",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-T** *TYPE*, **\\--type-not**=*TYPE*\n\nDo not search files matching *TYPE*. Multiple **-T/\\--type-not** flags\nmay be provided. Use the **\\--type-list** flag to list all available\ntypes.\n\nThis flag supports the special value **all**, which will behave as if\n**-T/\\--type-not** was provided for every file type supported by\nripgrep (including any custom file types). The end result is that\n**\\--type-not=all** causes ripgrep to search in \\\"blacklist\\\" mode,\nwhere it will only search files that are unrecognized by its type\ndefinitions.\n\nTo see the list of available file types, use the **\\--type-list**\nflag.\n"
+      }
+    },
+    {
+      "label": "--type-add",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--type-add**=*TYPESPEC*\n\nThis flag adds a new glob for a particular file type. Only one glob\ncan be added at a time. Multiple **\\--type-add** flags can be\nprovided. Unless **\\--type-clear** is used, globs are added to any\nexisting globs defined inside of ripgrep.\n\nNote that this must be passed to every invocation of ripgrep. Type\nsettings are not persisted. See **CONFIGURATION FILES** for a\nworkaround.\n\nExample:\n\n        rg --type-add 'foo:*.foo' -tfoo PATTERN\n\nThis flag can also be used to include rules from other types with the\nspecial include directive. The include directive permits specifying\none or more other type names (separated by a comma) that have been\ndefined and its rules will automatically be imported into the type\nspecified. For example, to create a type called src that matches C++,\nPython and Markdown files, one can use:\n\n        --type-add 'src:include:cpp,py,md'\n\nAdditional glob rules can still be added to the src type by using this\nflag again:\n\n        --type-add 'src:include:cpp,py,md' --type-add 'src:*.foo'\n\nNote that type names must consist only of Unicode letters or numbers.\nPunctuation characters are not allowed.\n"
+      }
+    },
+    {
+      "label": "--type-clear",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--type-clear**=*TYPE*\n\nClear the file type globs previously defined for *TYPE*. This clears\nany previously defined globs for the *TYPE*, but globs can be added\nafter this flag.\n\nNote that this must be passed to every invocation of ripgrep. Type\nsettings are not persisted. See **CONFIGURATION FILES** for a\nworkaround.\n"
+      }
+    },
+    {
+      "label": "-u",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-u**, **\\--unrestricted**\n\nThis flag reduces the level of \\\"smart\\\" filtering. Repeated uses (up\nto 3) reduces the filtering even more. When repeated three times,\nripgrep will search every file in a directory tree.\n\nA single **-u/\\--unrestricted** flag is equivalent to\n**\\--no-ignore**. Two **-u/\\--unrestricted** flags is equivalent to\n**\\--no-ignore** **-./\\--hidden**. Three **-u/\\--unrestricted** flags\nis equivalent to **\\--no-ignore** **-./\\--hidden** **\\--binary**.\n\nThe only filtering ripgrep still does when **-uuu** is given is to\nskip symbolic links and to avoid printing matches from binary files.\nSymbolic links can be followed via the **-L/\\--follow** flag, and\nbinary files can be treated as text files via the **-a/\\--text** flag.\n"
+      }
+    },
+    {
+      "label": "--unrestricted",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-u**, **\\--unrestricted**\n\nThis flag reduces the level of \\\"smart\\\" filtering. Repeated uses (up\nto 3) reduces the filtering even more. When repeated three times,\nripgrep will search every file in a directory tree.\n\nA single **-u/\\--unrestricted** flag is equivalent to\n**\\--no-ignore**. Two **-u/\\--unrestricted** flags is equivalent to\n**\\--no-ignore** **-./\\--hidden**. Three **-u/\\--unrestricted** flags\nis equivalent to **\\--no-ignore** **-./\\--hidden** **\\--binary**.\n\nThe only filtering ripgrep still does when **-uuu** is given is to\nskip symbolic links and to avoid printing matches from binary files.\nSymbolic links can be followed via the **-L/\\--follow** flag, and\nbinary files can be treated as text files via the **-a/\\--text** flag.\n"
+      }
+    },
+    {
+      "label": "-A",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-A** *NUM*, **\\--after-context**=*NUM*\n\nShow *NUM* lines after each match.\n\nThis overrides the **\\--passthru** flag and partially overrides the\n**-C/\\--context** flag.\n"
+      }
+    },
+    {
+      "label": "--after-context",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-A** *NUM*, **\\--after-context**=*NUM*\n\nShow *NUM* lines after each match.\n\nThis overrides the **\\--passthru** flag and partially overrides the\n**-C/\\--context** flag.\n"
+      }
+    },
+    {
+      "label": "-B",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-B** *NUM*, **\\--before-context**=*NUM*\n\nShow *NUM* lines before each match.\n\nThis overrides the **\\--passthru** flag and partially overrides the\n**-C/\\--context** flag.\n"
+      }
+    },
+    {
+      "label": "--before-context",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-B** *NUM*, **\\--before-context**=*NUM*\n\nShow *NUM* lines before each match.\n\nThis overrides the **\\--passthru** flag and partially overrides the\n**-C/\\--context** flag.\n"
+      }
+    },
+    {
+      "label": "--block-buffered",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--block-buffered**\n\nWhen enabled, ripgrep will use block buffering. That is, whenever a\nmatching line is found, it will be written to an in-memory buffer and\nwill not be written to stdout until the buffer reaches a certain size.\nThis is the default when ripgrep\\'s stdout is redirected to a pipeline\nor a file. When ripgrep\\'s stdout is connected to a tty, line\nbuffering will be used by default. Forcing block buffering can be\nuseful when dumping a large amount of contents to a tty.\n\nThis overrides the **\\--line-buffered** flag.\n\nThis flag can be disabled with **\\--no-block-buffered**.\n"
+      }
+    },
+    {
+      "label": "-b",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-b**, **\\--byte-offset**\n\nPrint the 0-based byte offset within the input file before each line\nof output. If **-o/\\--only-matching** is specified, print the offset\nof the matched text itself.\n\nIf ripgrep does transcoding, then the byte offset is in terms of the\nresult of transcoding and not the original data. This applies\nsimilarly to other transformations on the data, such as decompression\nor a **\\--pre** filter.\n\nThis flag can be disabled with **\\--no-byte-offset**.\n"
+      }
+    },
+    {
+      "label": "--byte-offset",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-b**, **\\--byte-offset**\n\nPrint the 0-based byte offset within the input file before each line\nof output. If **-o/\\--only-matching** is specified, print the offset\nof the matched text itself.\n\nIf ripgrep does transcoding, then the byte offset is in terms of the\nresult of transcoding and not the original data. This applies\nsimilarly to other transformations on the data, such as decompression\nor a **\\--pre** filter.\n\nThis flag can be disabled with **\\--no-byte-offset**.\n"
+      }
+    },
+    {
+      "label": "--color",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--color**=*WHEN*\n\nThis flag controls when to use colors. The default setting is\n**auto**, which means ripgrep will try to guess when to use colors.\nFor example, if ripgrep is printing to a tty, then it will use colors,\nbut if it is redirected to a file or a pipe, then it will suppress\ncolor output.\n\nripgrep will suppress color output by default in some other\ncircumstances as well. These include, but are not limited to:\n\n- When the **TERM** environment variable is not set or set to\n  **dumb**.\n\n- When the **NO_COLOR** environment variable is set (regardless of\n  value).\n\n- When flags that imply no use for colors are given. For example,\n  **\\--vimgrep** and **\\--json**.\n\nThe possible values for this flag are:\n\nnever\n\n:   Colors will never be used.\n\nauto\n\n:   The default. ripgrep tries to be smart.\n\nalways\n\n:   Colors will always be used regardless of where output is sent.\n\nansi\n\n:   Like \\'always\\', but emits ANSI escapes (even in a Windows\n    console).\n\nThis flag also controls whether hyperlinks are emitted. For example,\nwhen a hyperlink format is specified, hyperlinks won\\'t be used when\ncolor is suppressed. If one wants to emit hyperlinks but no colors,\nthen one must use the **\\--colors** flag to manually set all color\nstyles to **none**:\n\n        --colors 'path:none' \\\n        --colors 'line:none' \\\n        --colors 'column:none' \\\n        --colors 'match:none'\n"
+      }
+    },
+    {
+      "label": "--colors",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--colors**=*COLOR_SPEC*\n\nThis flag specifies color settings for use in the output. This flag\nmay be provided multiple times. Settings are applied iteratively.\nPre-existing color labels are limited to one of eight choices:\n**red**, **blue**, **green**, **cyan**, **magenta**, **yellow**,\n**white** and **black**. Styles are limited to **nobold**, **bold**,\n**nointense**, **intense**, **nounderline** or **underline**.\n\nThe format of the flag is\n**{***type***}:{***attribute***}:{***value***}**. *type* should be one\nof **path**, **line**, **column** or **match**. *attribute* can be\n**fg**, **bg** or **style**. *value* is either a color (for **fg** and\n**bg**) or a text style. A special format, **{***type***}:none**, will\nclear all color settings for *type*.\n\nFor example, the following command will change the match color to\nmagenta and the background color for line numbers to yellow:\n\n        rg --colors 'match:fg:magenta' --colors 'line:bg:yellow'\n\nExtended colors can be used for *value* when the tty supports ANSI\ncolor sequences. These are specified as either *x* (256-color) or\n*x***,***x***,***x* (24-bit truecolor) where *x* is a number between\n**0** and **255** inclusive. *x* may be given as a normal decimal\nnumber or a hexadecimal number, which is prefixed by **0x**.\n\nFor example, the following command will change the match background\ncolor to that represented by the rgb value (0,128,255):\n\n        rg --colors 'match:bg:0,128,255'\n\nor, equivalently,\n\n        rg --colors 'match:bg:0x0,0x80,0xFF'\n\nNote that the **intense** and **nointense** styles will have no effect\nwhen used alongside these extended color codes.\n"
+      }
+    },
+    {
+      "label": "--column",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--column**\n\nShow column numbers (1-based). This only shows the column numbers for\nthe first match on each line. This does not try to account for\nUnicode. One byte is equal to one column. This implies\n**-n/\\--line-number**.\n\nWhen **-o/\\--only-matching** is used, then the column numbers written\ncorrespond to the start of each match.\n\nThis flag can be disabled with **\\--no-column**.\n"
+      }
+    },
+    {
+      "label": "-C",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-C** *NUM*, **\\--context**=*NUM*\n\nShow *NUM* lines before and after each match. This is equivalent to\nproviding both the **-B/\\--before-context** and\n**-A/\\--after-context** flags with the same value.\n\nThis overrides the **\\--passthru** flag. The **-A/\\--after-context**\nand **-B/\\--before-context** flags both partially override this flag,\nregardless of the order. For example, **-A2 -C1** is equivalent to\n**-A2 -B1**.\n"
+      }
+    },
+    {
+      "label": "--context",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-C** *NUM*, **\\--context**=*NUM*\n\nShow *NUM* lines before and after each match. This is equivalent to\nproviding both the **-B/\\--before-context** and\n**-A/\\--after-context** flags with the same value.\n\nThis overrides the **\\--passthru** flag. The **-A/\\--after-context**\nand **-B/\\--before-context** flags both partially override this flag,\nregardless of the order. For example, **-A2 -C1** is equivalent to\n**-A2 -B1**.\n"
+      }
+    },
+    {
+      "label": "--context-separator",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--context-separator**=*SEPARATOR*\n\nThe string used to separate non-contiguous context lines in the\noutput. This is only used when one of the context flags is used (that\nis, **-A/\\--after-context**, **-B/\\--before-context** or\n**-C/\\--context**). Escape sequences like **\\\\x7F** or **\\\\t** may be\nused. The default value is **\\--**.\n\nWhen the context separator is set to an empty string, then a line\nbreak is still inserted. To completely disable context separators, use\nthe **\\--no-context-separator** flag.\n"
+      }
+    },
+    {
+      "label": "--field-context-separator",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--field-context-separator**=*SEPARATOR*\n\nSet the field context separator. This separator is only used when\nprinting contextual lines. It is used to delimit file paths, line\nnumbers, columns and the contextual line itself. The separator may be\nany number of bytes, including zero. Escape sequences like **\\\\x7F**\nor **\\\\t** may be used.\n\nThe **-** character is the default value.\n"
+      }
+    },
+    {
+      "label": "--field-match-separator",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--field-match-separator**=*SEPARATOR*\n\nSet the field match separator. This separator is only used when\nprinting matching lines. It is used to delimit file paths, line\nnumbers, columns and the matching line itself. The separator may be\nany number of bytes, including zero. Escape sequences like **\\\\x7F**\nor **\\\\t** may be used.\n\nThe **:** character is the default value.\n"
+      }
+    },
+    {
+      "label": "--heading",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--heading**\n\nThis flag prints the file path above clusters of matches from each\nfile instead of printing the file path as a prefix for each matched\nline.\n\nThis is the default mode when printing to a tty.\n\nWhen **stdout** is not a tty, then ripgrep will default to the\nstandard grep-like format. One can force this format in Unix-like\nenvironments by piping the output of ripgrep to **cat**. For example,\n**rg** *foo* **\\|** cat.\n\nThis flag can be disabled with **\\--no-heading**.\n"
+      }
+    },
+    {
+      "label": "-h",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-h**, **\\--help**\n\nThis flag prints the help output for ripgrep.\n\nUnlike most other flags, the behavior of the short flag, **-h**, and\nthe long flag, **\\--help**, is different. The short flag will show a\ncondensed help output while the long flag will show a verbose help\noutput. The verbose help output has complete documentation, where as\nthe condensed help output will show only a single line for every flag.\n"
+      }
+    },
+    {
+      "label": "--help",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-h**, **\\--help**\n\nThis flag prints the help output for ripgrep.\n\nUnlike most other flags, the behavior of the short flag, **-h**, and\nthe long flag, **\\--help**, is different. The short flag will show a\ncondensed help output while the long flag will show a verbose help\noutput. The verbose help output has complete documentation, where as\nthe condensed help output will show only a single line for every flag.\n"
+      }
+    },
+    {
+      "label": "--hostname-bin",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--hostname-bin**=*COMMAND*\n\nThis flag controls how ripgrep determines this system\\'s hostname. The\nflag\\'s value should correspond to an executable (either a path or\nsomething that can be found via your system\\'s **PATH** environment\nvariable). When set, ripgrep will run this executable, with no\narguments, and treat its output (with leading and trailing whitespace\nstripped) as your system\\'s hostname.\n\nWhen not set (the default, or the empty string), ripgrep will try to\nautomatically detect your system\\'s hostname. On Unix, this\ncorresponds to calling **gethostname**. On Windows, this corresponds\nto calling **GetComputerNameExW** to fetch the system\\'s \\\"physical\nDNS hostname.\\\"\n\nripgrep uses your system\\'s hostname for producing hyperlinks.\n"
+      }
+    },
+    {
+      "label": "--hyperlink-format",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--hyperlink-format**=*FORMAT*\n\nSet the format of hyperlinks to use when printing results. Hyperlinks\nmake certain elements of ripgrep\\'s output, such as file paths,\nclickable. This generally only works in terminal emulators that\nsupport OSC-8 hyperlinks. For example, the format\n**file://{host}{path}** will emit an RFC 8089 hyperlink. To see the\nformat that ripgrep is using, pass the **\\--debug** flag.\n\nAlternatively, a format string may correspond to one of the following\naliases: **default**, **none**, **file**, **grep+**, **kitty**,\n**macvim**, **textmate**, **vscode**, **vscode-insiders**,\n**vscodium**. The alias will be replaced with a format string that is\nintended to work for the corresponding application.\n\nThe following variables are available in the format string:\n\n**{path}**\n\n:   Required. This is replaced with a path to a matching file. The\n    path is guaranteed to be absolute and percent encoded such that it\n    is valid to put into a URI. Note that a path is guaranteed to\n    start with a /.\n\n**{host}**\n\n:   Optional. This is replaced with your system\\'s hostname. On Unix,\n    this corresponds to calling **gethostname**. On Windows, this\n    corresponds to calling **GetComputerNameExW** to fetch the\n    system\\'s \\\"physical DNS hostname.\\\" Alternatively, if\n    **\\--hostname-bin** was provided, then the hostname returned from\n    the output of that program will be returned. If no hostname could\n    be found, then this variable is replaced with the empty string.\n\n**{line}**\n\n:   Optional. If appropriate, this is replaced with the line number of\n    a match. If no line number is available (for example, if\n    **\\--no-line-number** was given), then it is automatically\n    replaced with the value 1.\n\n**{column}**\n\n:   Optional, but requires the presence of **{line}**. If appropriate,\n    this is replaced with the column number of a match. If no column\n    number is available (for example, if **\\--no-column** was given),\n    then it is automatically replaced with the value 1.\n\n**{wslprefix}**\n\n:   Optional. This is a special value that is set to\n    **wsl\\$/***WSL_DISTRO_NAME*, where *WSL_DISTRO_NAME* corresponds\n    to the value of the equivalent environment variable. If the system\n    is not Unix or if the *WSL_DISTRO_NAME* environment variable is\n    not set, then this is replaced with the empty string.\n\nA format string may be empty. An empty format string is equivalent to\nthe **none** alias. In this case, hyperlinks will be disabled.\n\nAt present, ripgrep does not enable hyperlinks by default. Users must\nopt into them. If you aren\\'t sure what format to use, try\n**default**.\n\nLike colors, when ripgrep detects that stdout is not connected to a\ntty, then hyperlinks are automatically disabled, regardless of the\nvalue of this flag. Users can pass **\\--color=always** to forcefully\nemit hyperlinks.\n\nNote that hyperlinks are only written when a path is also in the\noutput and colors are enabled. To write hyperlinks without colors,\nyou\\'ll need to configure ripgrep to not colorize anything without\nactually disabling all ANSI escape codes completely:\n\n        --colors 'path:none' \\\n        --colors 'line:none' \\\n        --colors 'column:none' \\\n        --colors 'match:none'\n\nripgrep works this way because it treats the **\\--color** flag as a\nproxy for whether ANSI escape codes should be used at all. This means\nthat environment variables like **NO_COLOR=1** and **TERM=dumb** not\nonly disable colors, but hyperlinks as well. Similarly, colors and\nhyperlinks are disabled when ripgrep is not writing to a tty. (Unless\none forces the issue by setting **\\--color=always**.)\n\nIf you\\'re searching a file directly, for example:\n\n        rg foo path/to/file\n\nthen hyperlinks will not be emitted since the path given does not\nappear in the output. To make the path appear, and thus also a\nhyperlink, use the **-H/\\--with-filename** flag.\n\nFor more information on hyperlinks in terminal emulators, see:\nhttps://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda\n"
+      }
+    },
+    {
+      "label": "--include-zero",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--include-zero**\n\nWhen used with **-c/\\--count** or **\\--count-matches**, this causes\nripgrep to print the number of matches for each file even if there\nwere zero matches. This is disabled by default but can be enabled to\nmake ripgrep behave more like grep.\n\nThis flag can be disabled with **\\--no-include-zero**.\n"
+      }
+    },
+    {
+      "label": "--line-buffered",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--line-buffered**\n\nWhen enabled, ripgrep will always use line buffering. That is,\nwhenever a matching line is found, it will be flushed to stdout\nimmediately. This is the default when ripgrep\\'s stdout is connected\nto a tty, but otherwise, ripgrep will use block buffering, which is\ntypically faster. This flag forces ripgrep to use line buffering even\nif it would otherwise use block buffering. This is typically useful in\nshell pipelines, for example:\n\n        tail -f something.log | rg foo --line-buffered | rg bar\n\nThis overrides the **\\--block-buffered** flag.\n\nThis flag can be disabled with **\\--no-line-buffered**.\n"
+      }
+    },
+    {
+      "label": "-n",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-n**, **\\--line-number**\n\nShow line numbers (1-based).\n\nThis is enabled by default when stdout is connected to a tty.\n\nThis flag can be disabled by **-N/\\--no-line-number**.\n"
+      }
+    },
+    {
+      "label": "--line-number",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-n**, **\\--line-number**\n\nShow line numbers (1-based).\n\nThis is enabled by default when stdout is connected to a tty.\n\nThis flag can be disabled by **-N/\\--no-line-number**.\n"
+      }
+    },
+    {
+      "label": "-N",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-N**, **\\--no-line-number**\n\nSuppress line numbers.\n\nLine numbers are off by default when stdout is not connected to a tty.\n\nLine numbers can be forcefully turned on by **-n/\\--line-number**.\n"
+      }
+    },
+    {
+      "label": "--no-line-number",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-N**, **\\--no-line-number**\n\nSuppress line numbers.\n\nLine numbers are off by default when stdout is not connected to a tty.\n\nLine numbers can be forcefully turned on by **-n/\\--line-number**.\n"
+      }
+    },
+    {
+      "label": "-M",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-M** *NUM*, **\\--max-columns**=*NUM*\n\nWhen given, ripgrep will omit lines longer than this limit in bytes.\nInstead of printing long lines, only the number of matches in that\nline is printed.\n\nWhen this flag is omitted or is set to **0**, then it has no effect.\n"
+      }
+    },
+    {
+      "label": "--max-columns",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-M** *NUM*, **\\--max-columns**=*NUM*\n\nWhen given, ripgrep will omit lines longer than this limit in bytes.\nInstead of printing long lines, only the number of matches in that\nline is printed.\n\nWhen this flag is omitted or is set to **0**, then it has no effect.\n"
+      }
+    },
+    {
+      "label": "--max-columns-preview",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--max-columns-preview**\n\nPrints a preview for lines exceeding the configured max column limit.\n\nWhen the **-M/\\--max-columns** flag is used, ripgrep will by default\ncompletely replace any line that is too long with a message indicating\nthat a matching line was removed. When this flag is combined with\n**-M/\\--max-columns**, a preview of the line (corresponding to the\nlimit size) is shown instead, where the part of the line exceeding the\nlimit is not shown.\n\nIf the **-M/\\--max-columns** flag is not set, then this has no effect.\n\nThis flag can be disabled with **\\--no-max-columns-preview**.\n"
+      }
+    },
+    {
+      "label": "-0",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-0**, **\\--null**\n\nWhenever a file path is printed, follow it with a **NUL** byte. This\nincludes printing file paths before matches, and when printing a list\nof matching files such as with **-c/\\--count**,\n**-l/\\--files-with-matches** and **\\--files**. This option is useful\nfor use with **xargs**.\n"
+      }
+    },
+    {
+      "label": "--null",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-0**, **\\--null**\n\nWhenever a file path is printed, follow it with a **NUL** byte. This\nincludes printing file paths before matches, and when printing a list\nof matching files such as with **-c/\\--count**,\n**-l/\\--files-with-matches** and **\\--files**. This option is useful\nfor use with **xargs**.\n"
+      }
+    },
+    {
+      "label": "-o",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-o**, **\\--only-matching**\n\nPrint only the matched (non-empty) parts of a matching line, with each\nsuch part on a separate output line.\n"
+      }
+    },
+    {
+      "label": "--only-matching",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-o**, **\\--only-matching**\n\nPrint only the matched (non-empty) parts of a matching line, with each\nsuch part on a separate output line.\n"
+      }
+    },
+    {
+      "label": "--path-separator",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--path-separator**=*SEPARATOR*\n\nSet the path separator to use when printing file paths. This defaults\nto your platform\\'s path separator, which is **/** on Unix and **\\\\**\non Windows. This flag is intended for overriding the default when the\nenvironment demands it (e.g., cygwin). A path separator is limited to\na single byte.\n\nSetting this flag to an empty string reverts it to its default\nbehavior. That is, the path separator is automatically chosen based on\nthe environment.\n"
+      }
+    },
+    {
+      "label": "--passthru",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--passthru**\n\nPrint both matching and non-matching lines.\n\nAnother way to achieve a similar effect is by modifying your pattern\nto match the empty string. For example, if you are searching using\n**rg** *foo*, then using **rg** **\\'\\^\\|***foo***\\'** instead will\nemit every line in every file searched, but only occurrences of *foo*\nwill be highlighted. This flag enables the same behavior without\nneeding to modify the pattern.\n\nAn alternative spelling for this flag is **\\--passthrough**.\n\nThis overrides the **-C/\\--context**, **-A/\\--after-context** and\n**-B/\\--before-context** flags.\n"
+      }
+    },
+    {
+      "label": "-p",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-p**, **\\--pretty**\n\nThis is a convenience alias for **\\--color=always \\--heading**\n\\--line-number. This flag is useful when you still want pretty output\neven if you\\'re piping ripgrep to another program or file. For\nexample: **rg -p** *foo* **\\| less -R**.\n"
+      }
+    },
+    {
+      "label": "--pretty",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-p**, **\\--pretty**\n\nThis is a convenience alias for **\\--color=always \\--heading**\n\\--line-number. This flag is useful when you still want pretty output\neven if you\\'re piping ripgrep to another program or file. For\nexample: **rg -p** *foo* **\\| less -R**.\n"
+      }
+    },
+    {
+      "label": "-q",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-q**, **\\--quiet**\n\nDo not print anything to stdout. If a match is found in a file, then\nripgrep will stop searching. This is useful when ripgrep is used only\nfor its exit code (which will be an error code if no matches are\nfound).\n\nWhen **\\--files** is used, ripgrep will stop finding files after\nfinding the first file that does not match any ignore rules.\n"
+      }
+    },
+    {
+      "label": "--quiet",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-q**, **\\--quiet**\n\nDo not print anything to stdout. If a match is found in a file, then\nripgrep will stop searching. This is useful when ripgrep is used only\nfor its exit code (which will be an error code if no matches are\nfound).\n\nWhen **\\--files** is used, ripgrep will stop finding files after\nfinding the first file that does not match any ignore rules.\n"
+      }
+    },
+    {
+      "label": "-r",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-r** *REPLACEMENT*, **\\--replace**=*REPLACEMENT*\n\nReplaces every match with the text given when printing results.\nNeither this flag nor any other ripgrep flag will modify your files.\n\nCapture group indices (e.g., **\\$***5*) and names (e.g., **\\$***foo*)\nare supported in the replacement string. Capture group indices are\nnumbered based on the position of the opening parenthesis of the\ngroup, where the leftmost such group is **\\$***1*. The special\n**\\$***0* group corresponds to the entire match.\n\nThe name of a group is formed by taking the longest string of letters,\nnumbers and underscores (i.e. **\\[\\_0-9A-Za-z\\]**) after the **\\$**.\nFor example, **\\$***1a* will be replaced with the group named *1a*,\nnot the group at index *1*. If the group\\'s name contains characters\nthat aren\\'t letters, numbers or underscores, or you want to\nimmediately follow the group with another string, the name should be\nput inside braces. For example, **\\${***1***}***a* will take the\ncontent of the group at index *1* and append *a* to the end of it.\n\nIf an index or name does not refer to a valid capture group, it will\nbe replaced with an empty string.\n\nIn shells such as Bash and zsh, you should wrap the pattern in single\nquotes instead of double quotes. Otherwise, capture group indices will\nbe replaced by expanded shell variables which will most likely be\nempty.\n\nTo write a literal **\\$**, use **\\$\\$**.\n\nNote that the replacement by default replaces each match, and not the\nentire line. To replace the entire line, you should match the entire\nline.\n\nThis flag can be used with the **-o/\\--only-matching** flag.\n"
+      }
+    },
+    {
+      "label": "--replace",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-r** *REPLACEMENT*, **\\--replace**=*REPLACEMENT*\n\nReplaces every match with the text given when printing results.\nNeither this flag nor any other ripgrep flag will modify your files.\n\nCapture group indices (e.g., **\\$***5*) and names (e.g., **\\$***foo*)\nare supported in the replacement string. Capture group indices are\nnumbered based on the position of the opening parenthesis of the\ngroup, where the leftmost such group is **\\$***1*. The special\n**\\$***0* group corresponds to the entire match.\n\nThe name of a group is formed by taking the longest string of letters,\nnumbers and underscores (i.e. **\\[\\_0-9A-Za-z\\]**) after the **\\$**.\nFor example, **\\$***1a* will be replaced with the group named *1a*,\nnot the group at index *1*. If the group\\'s name contains characters\nthat aren\\'t letters, numbers or underscores, or you want to\nimmediately follow the group with another string, the name should be\nput inside braces. For example, **\\${***1***}***a* will take the\ncontent of the group at index *1* and append *a* to the end of it.\n\nIf an index or name does not refer to a valid capture group, it will\nbe replaced with an empty string.\n\nIn shells such as Bash and zsh, you should wrap the pattern in single\nquotes instead of double quotes. Otherwise, capture group indices will\nbe replaced by expanded shell variables which will most likely be\nempty.\n\nTo write a literal **\\$**, use **\\$\\$**.\n\nNote that the replacement by default replaces each match, and not the\nentire line. To replace the entire line, you should match the entire\nline.\n\nThis flag can be used with the **-o/\\--only-matching** flag.\n"
+      }
+    },
+    {
+      "label": "--sort",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--sort**=*SORTBY*\n\nThis flag enables sorting of results in ascending order. The possible\nvalues for this flag are:\n\n**none**\n\n:   (Default) Do not sort results. Fastest. Can be multi-threaded.\n\n**path**\n\n:   Sort by file path. Always single-threaded. The order is determined\n    by sorting files in each directory entry during traversal. This\n    means that given the files **a/b** and **a+**, the latter will\n    sort after the former even though **+** would normally sort before\n    **/**.\n\n**modified**\n\n:   Sort by the last modified time on a file. Always single-threaded.\n\n**accessed**\n\n:   Sort by the last accessed time on a file. Always single-threaded.\n\n**created**\n\n:   Sort by the creation time on a file. Always single-threaded.\n\nIf the chosen (manually or by-default) sorting criteria isn\\'t\navailable on your system (for example, creation time is not available\non ext4 file systems), then ripgrep will attempt to detect this, print\nan error and exit without searching.\n\nTo sort results in reverse or descending order, use the **\\--sortr**\nflag. Also, this flag overrides **\\--sortr**.\n\nNote that sorting results currently always forces ripgrep to abandon\nparallelism and run in a single thread.\n"
+      }
+    },
+    {
+      "label": "--sortr",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--sortr**=*SORTBY*\n\nThis flag enables sorting of results in descending order. The possible\nvalues for this flag are:\n\n**none**\n\n:   (Default) Do not sort results. Fastest. Can be multi-threaded.\n\n**path**\n\n:   Sort by file path. Always single-threaded. The order is determined\n    by sorting files in each directory entry during traversal. This\n    means that given the files **a/b** and **a+**, the latter will\n    sort before the former even though **+** would normally sort after\n    **/** when doing a reverse lexicographic sort.\n\n**modified**\n\n:   Sort by the last modified time on a file. Always single-threaded.\n\n**accessed**\n\n:   Sort by the last accessed time on a file. Always single-threaded.\n\n**created**\n\n:   Sort by the creation time on a file. Always single-threaded.\n\nIf the chosen (manually or by-default) sorting criteria isn\\'t\navailable on your system (for example, creation time is not available\non ext4 file systems), then ripgrep will attempt to detect this, print\nan error and exit without searching.\n\nTo sort results in ascending order, use the **\\--sort** flag. Also,\nthis flag overrides **\\--sort**.\n\nNote that sorting results currently always forces ripgrep to abandon\nparallelism and run in a single thread.\n"
+      }
+    },
+    {
+      "label": "--trim",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--trim**\n\nWhen set, all ASCII whitespace at the beginning of each line printed\nwill be removed.\n\nThis flag can be disabled with **\\--no-trim**.\n"
+      }
+    },
+    {
+      "label": "--vimgrep",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--vimgrep**\n\nThis flag instructs ripgrep to print results with every match on its\nown line, including line numbers and column numbers.\n\nWith this option, a line with more than one match will be printed in\nits entirety more than once. For that reason, the total amount of\noutput as a result of this flag can be quadratic in the size of the\ninput. For example, if the pattern matches every byte in an input\nfile, then each line will be repeated for every byte matched. For this\nreason, users should only use this flag when there is no other choice.\nEditor integrations should prefer some other way of reading results\nfrom ripgrep, such as via the **\\--json** flag. One alternative to\navoiding exorbitant memory usage is to force ripgrep into single\nthreaded mode with the **-j/\\--threads** flag. Note though that this\nwill not impact the total size of the output, just the heap memory\nthat ripgrep will use.\n"
+      }
+    },
+    {
+      "label": "-H",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-H**, **\\--with-filename**\n\nThis flag instructs ripgrep to print the file path for each matching\nline. This is the default when more than one file is searched. If\n**\\--heading** is enabled (the default when printing to a tty), the\nfile path will be shown above clusters of matches from each file;\notherwise, the file name will be shown as a prefix for each matched\nline.\n\nThis flag overrides **-I/\\--no-filename**.\n"
+      }
+    },
+    {
+      "label": "--with-filename",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-H**, **\\--with-filename**\n\nThis flag instructs ripgrep to print the file path for each matching\nline. This is the default when more than one file is searched. If\n**\\--heading** is enabled (the default when printing to a tty), the\nfile path will be shown above clusters of matches from each file;\notherwise, the file name will be shown as a prefix for each matched\nline.\n\nThis flag overrides **-I/\\--no-filename**.\n"
+      }
+    },
+    {
+      "label": "-I",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-I**, **\\--no-filename**\n\nThis flag instructs ripgrep to never print the file path with each\nmatching line. This is the default when ripgrep is explicitly\ninstructed to search one file or stdin.\n\nThis flag overrides **-H/\\--with-filename**.\n"
+      }
+    },
+    {
+      "label": "--no-filename",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-I**, **\\--no-filename**\n\nThis flag instructs ripgrep to never print the file path with each\nmatching line. This is the default when ripgrep is explicitly\ninstructed to search one file or stdin.\n\nThis flag overrides **-H/\\--with-filename**.\n"
+      }
+    },
+    {
+      "label": "--sort-files",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--sort-files**\n\nDEPRECATED. Use **\\--sort=path** instead.\n\nThis flag instructs ripgrep to sort search results by file path\nlexicographically in ascending order. Note that this currently\ndisables all parallelism and runs search in a single thread.\n\nThis flag overrides **\\--sort** and **\\--sortr**.\n\nThis flag can be disabled with **\\--no-sort-files**.\n"
+      }
+    },
+    {
+      "label": "-c",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-c**, **\\--count**\n\nThis flag suppresses normal output and shows the number of lines that\nmatch the given patterns for each file searched. Each file containing\na match has its path and count printed on each line. Note that unless\n**-U/\\--multiline** is enabled, this reports the number of lines that\nmatch and not the total number of matches. In multiline mode,\n**-c/\\--count** is equivalent to **\\--count-matches**.\n\nIf only one file is given to ripgrep, then only the count is printed\nif there is a match. The **-H/\\--with-filename** flag can be used to\nforce printing the file path in this case. If you need a count to be\nprinted regardless of whether there is a match, then use\n**\\--include-zero**.\n\nThis overrides the **\\--count-matches** flag. Note that when\n**-c/\\--count** is combined with **-o/\\--only-matching**, then ripgrep\nbehaves as if **\\--count-matches** was given.\n"
+      }
+    },
+    {
+      "label": "--count",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-c**, **\\--count**\n\nThis flag suppresses normal output and shows the number of lines that\nmatch the given patterns for each file searched. Each file containing\na match has its path and count printed on each line. Note that unless\n**-U/\\--multiline** is enabled, this reports the number of lines that\nmatch and not the total number of matches. In multiline mode,\n**-c/\\--count** is equivalent to **\\--count-matches**.\n\nIf only one file is given to ripgrep, then only the count is printed\nif there is a match. The **-H/\\--with-filename** flag can be used to\nforce printing the file path in this case. If you need a count to be\nprinted regardless of whether there is a match, then use\n**\\--include-zero**.\n\nThis overrides the **\\--count-matches** flag. Note that when\n**-c/\\--count** is combined with **-o/\\--only-matching**, then ripgrep\nbehaves as if **\\--count-matches** was given.\n"
+      }
+    },
+    {
+      "label": "--count-matches",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--count-matches**\n\nThis flag suppresses normal output and shows the number of individual\nmatches of the given patterns for each file searched. Each file\ncontaining matches has its path and match count printed on each line.\nNote that this reports the total number of individual matches and not\nthe number of lines that match.\n\nIf only one file is given to ripgrep, then only the count is printed\nif there is a match. The **-H/\\--with-filename** flag can be used to\nforce printing the file path in this case.\n\nThis overrides the **-c/\\--count** flag. Note that when\n**-c/\\--count** is combined with **-o/\\--only-matching**, then ripgrep\nbehaves as if **\\--count-matches** was given.\n"
+      }
+    },
+    {
+      "label": "-l",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-l**, **\\--files-with-matches**\n\nPrint only the paths with at least one match and suppress match\ncontents.\n\nThis overrides **\\--files-without-match**.\n"
+      }
+    },
+    {
+      "label": "--files-with-matches",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**-l**, **\\--files-with-matches**\n\nPrint only the paths with at least one match and suppress match\ncontents.\n\nThis overrides **\\--files-without-match**.\n"
+      }
+    },
+    {
+      "label": "--files-without-match",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--files-without-match**\n\nPrint the paths that contain zero matches and suppress match contents.\n\nThis overrides **-l/\\--files-with-matches**.\n"
+      }
+    },
+    {
+      "label": "--json",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--json**\n\nEnable printing results in a JSON Lines format.\n\nWhen this flag is provided, ripgrep will emit a sequence of messages,\neach encoded as a JSON object, where there are five different message\ntypes:\n\n**begin**\n\n:   A message that indicates a file is being searched and contains at\n    least one match.\n\n**end**\n\n:   A message the indicates a file is done being searched. This\n    message also include summary statistics about the search for a\n    particular file.\n\n**match**\n\n:   A message that indicates a match was found. This includes the text\n    and offsets of the match.\n\n**context**\n\n:   A message that indicates a contextual line was found. This\n    includes the text of the line, along with any match information if\n    the search was inverted.\n\n**summary**\n\n:   The final message emitted by ripgrep that contains summary\n    statistics about the search across all files.\n\nSince file paths or the contents of files are not guaranteed to be\nvalid UTF-8 and JSON itself must be representable by a Unicode\nencoding, ripgrep will emit all data elements as objects with one of\ntwo keys: **text** or **bytes**. **text** is a normal JSON string when\nthe data is valid UTF-8 while **bytes** is the base64 encoded contents\nof the data.\n\nThe JSON Lines format is only supported for showing search results. It\ncannot be used with other flags that emit other types of output, such\nas **\\--files**, **-l/\\--files-with-matches**,\n**\\--files-without-match**, **-c/\\--count** or **\\--count-matches**.\nripgrep will report an error if any of the aforementioned flags are\nused in concert with **\\--json**.\n\nOther flags that control aspects of the standard output such as\n**-o/\\--only-matching**, **\\--heading**, **-r/\\--replace**,\n**-M/\\--max-columns**, etc., have no effect when **\\--json** is set.\nHowever, enabling JSON output will always implicitly and\nunconditionally enable **\\--stats**.\n\nA more complete description of the JSON format used can be found here:\n*https://docs.rs/grep-printer/\\*/grep_printer/struct.JSON.html*.\n\nThis flag can be disabled with **\\--no-json**.\n"
+      }
+    },
+    {
+      "label": "--debug",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--debug**\n\nShow debug messages. Please use this when filing a bug report.\n\nThe **\\--debug** flag is generally useful for figuring out why ripgrep\nskipped searching a particular file. The debug messages should mention\nall files skipped and why they were skipped.\n\nTo get even more debug output, use the **\\--trace** flag, which\nimplies **\\--debug** along with additional trace data.\n"
+      }
+    },
+    {
+      "label": "--no-ignore-messages",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-ignore-messages**\n\nWhen this flag is enabled, all error messages related to parsing\nignore files are suppressed. By default, error messages are printed to\nstderr. In cases where these errors are expected, this flag can be\nused to avoid seeing the noise produced by the messages.\n\nThis flag can be disabled with **\\--ignore-messages**.\n"
+      }
+    },
+    {
+      "label": "--no-messages",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-messages**\n\nThis flag suppresses some error messages. Specifically, messages\nrelated to the failed opening and reading of files. Error messages\nrelated to the syntax of the pattern are still shown.\n\nThis flag can be disabled with **\\--messages**.\n"
+      }
+    },
+    {
+      "label": "--stats",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--stats**\n\nWhen enabled, ripgrep will print aggregate statistics about the\nsearch. When this flag is present, ripgrep will print at least the\nfollowing stats to stdout at the end of the search: number of matched\nlines, number of files with matches, number of files searched, and the\ntime taken for the entire search to complete.\n\nThis set of aggregate statistics may expand over time.\n\nThis flag is always and implicitly enabled when **\\--json** is used.\n\nNote that this flag has no effect if **\\--files**,\n**-l/\\--files-with-matches** or **\\--files-without-match** is passed.\n\nThis flag can be disabled with **\\--no-stats**.\n"
+      }
+    },
+    {
+      "label": "--trace",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--trace**\n\nShow trace messages. This shows even more detail than the **\\--debug**\nflag. Generally, one should only use this if **\\--debug** doesn\\'t\nemit the information you\\'re looking for.\n"
+      }
+    },
+    {
+      "label": "--files",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--files**\n\nPrint each file that would be searched without actually performing the\nsearch. This is useful to determine whether a particular file is being\nsearched or not.\n\nThis overrides **\\--type-list**.\n"
+      }
+    },
+    {
+      "label": "--generate",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--generate**=*KIND*\n\nThis flag instructs ripgrep to generate some special kind of output\nidentified by *KIND* and then quit without searching. *KIND* can be\none of the following values:\n\n**man**\n\n:   Generates a manual page for ripgrep in the **roff** format.\n\n**complete-bash**\n\n:   Generates a completion script for the **bash** shell.\n\n**complete-zsh**\n\n:   Generates a completion script for the **zsh** shell.\n\n**complete-fish**\n\n:   Generates a completion script for the **fish** shell.\n\n**complete-powershell**\n\n:   Generates a completion script for PowerShell.\n\nThe output is written to **stdout**. The list above may expand over\ntime.\n"
+      }
+    },
+    {
+      "label": "--no-config",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--no-config**\n\nWhen set, ripgrep will never read configuration files. When this flag\nis present, ripgrep will not respect the **RIPGREP_CONFIG_PATH**\nenvironment variable.\n\nIf ripgrep ever grows a feature to automatically read configuration\nfiles in pre-defined locations, then this flag will also disable that\nbehavior as well.\n"
+      }
+    },
+    {
+      "label": "--pcre2-version",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--pcre2-version**\n\nWhen this flag is present, ripgrep will print the version of PCRE2 in\nuse, along with other information, and then exit. If PCRE2 is not\navailable, then ripgrep will print an error message and exit with an\nerror code.\n"
+      }
+    },
+    {
+      "label": "--type-list",
+      "documentation": {
+        "kind": "markdown",
+        "value": "**\\--type-list**\n\nShow all supported file types and their corresponding globs. This\ntakes any **\\--type-add** and **\\--type-clear** flags given into\naccount. Each type is printed on its own line, followed by a **:** and\nthen a comma-delimited list of globs for that type on the same line.\n"
+      }
+    }
+  ]
+}
