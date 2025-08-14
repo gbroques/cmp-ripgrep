@@ -4,9 +4,6 @@
 
 Documentation for each flag is derived from [ripgrep's man page](https://man.archlinux.org/man/rg.1).
 
-> [!WARNING]
-> Currently experimental until v1.0.0 release.
-
 ## Motivation
 
 [telescope-live-grep-args.nvim](https://github.com/nvim-telescope/telescope-live-grep-args.nvim) allows passing flags to the underlying ripgrep (`rg`) command that powers the search.
@@ -19,10 +16,13 @@ https://github.com/user-attachments/assets/d2ae029c-fd7f-455d-bd9d-24311fccd417
 
 ## Installation
 
-If you use [lazy.nvim](https://github.com/folke/lazy.nvim) as your plugin manager:
+This project follows [semantic versioning](https://semver.org/) so you may pin it to a major version range if your plugin manager supports that.
+
+For example, if you use [lazy.nvim](https://github.com/folke/lazy.nvim) as your plugin manager:
 ```lua
 {
   'gbroques/cmp-ripgrep-flags',
+  version = '^1.0.0',
   dependencies = 'hrsh7th/nvim-cmp'
 }
 ```
