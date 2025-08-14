@@ -38,8 +38,8 @@ local completion_items = read.completion_items()
 ---  local cmp = require('cmp')
 ---  cmp.setup({
 ---    -- Enable completion when picker is live_grep_args, and buffer type is prompt.
----    -- Completion is disabled by default for the prompt buffer type:
----    -- https://github.com/hrsh7th/nvim-cmp/issues/60
+---    -- Completion is disabled by default for the prompt buffer type.
+---    -- See https://github.com/hrsh7th/nvim-cmp/issues/60
 ---    enabled = function()
 ---      local is_prompt = vim.api.nvim_get_option_value('buftype', { buf = 0 }) == 'prompt'
 ---      return (is_prompt and is_current_picker_live_grep_args()) or not is_prompt
