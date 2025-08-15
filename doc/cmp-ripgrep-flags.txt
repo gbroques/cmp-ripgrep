@@ -25,11 +25,8 @@ cmp-ripgrep-flags.Option                              *cmp-ripgrep-flags.Option*
       local function is_current_picker_live_grep_args()
         local bufnr = vim.api.nvim_get_current_buf()
         local current_picker = require('telescope.actions.state').get_current_picker(bufnr)
-        if current_picker == nil then
-          return false
-        end
         -- You need to update this if you customize the default prompt_title for the picker.
-        return current_picker and current_picker.prompt_title == 'Live Grep (Args)'
+        return current_picker ~= nil and current_picker.prompt_title == 'Live Grep (Args)'
       end
       local cmp = require('cmp')
       cmp.setup({
